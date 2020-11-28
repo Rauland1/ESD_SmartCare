@@ -1,17 +1,19 @@
 <%-- 
-    Document   : LoginResult
-    Created on : Nov 26, 2020, 5:06:30 PM
+    Document   : dashboard
+    Created on : Nov 27, 2020, 4:58:27 PM
     Author     : Raul-Andrei Ginj-Groszhart
 --%>
+
+<% String username = (String) request.getAttribute("username"); %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login Result</title>
+        <title><% out.print(username); %>Dashboard</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Welcome, <% out.print(username);%></h1>
     </body>
 </html>

@@ -1,0 +1,72 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 29-Nov-2020, 14:44:00
+    Author     : Ashley Gregory
+*/
+
+
+@import "https://kit.fontawesome.com/6b0d0ffdec.js";
+body {
+    margin: 0;  
+    padding: 0;
+    font-family: sans-serif;
+    background: url(smartcare.jpg);
+    
+    background-size: cover; 
+    
+
+}
+.login-box{
+    width: 280px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: whitesmoke;
+}
+.login-box h1{
+    font-size: 40px;
+    border-bottom: 6px solid whitesmoke;
+    margin-bottom: 25px;
+    padding: 13px 0;
+}
+
+.textbox{
+    width: 100%;
+    overflow: hidden;
+    font-size: 30px;
+    padding: 8px 0;
+    margin-bottom: 8px 0;
+    border-bottom: 2px solid whitesmoke;
+    color: whitesmoke;
+}
+.textbox i{
+    width: 26px;
+    text-align: center;
+    color: whitesmoke;
+}
+.textbox input{
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 17px;
+    color: black;
+}
+.btn{
+    width: 100%;
+    background: whitesmoke;
+    border: 6px solid #0099cc;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+
+

@@ -11,7 +11,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><% out.print(username); %>Dashboard</title>
+        <link rel="stylesheet" href="css/styles.css" type="text/css">
+
+        <title> Welcome to Dashboard </title>
     </head>
     <body>
         <h1>Welcome, <% out.print(username);%></h1>

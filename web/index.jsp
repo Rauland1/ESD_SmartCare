@@ -14,21 +14,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>SmartCare Login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style><%@include file="/WEB-INF/css/styles.css"%></style>
+        <script src="https://kit.fontawesome.com/6b0d0ffdec.js" crossorigin="anonymous"></script>
+        <title>SmartCare Login</title>
     </head>
+
     <body>
-        <h1>SmartCare Login</h1>
-        <!-- Login form that redirects to LoginServlet.doPost() -->
-        <form action="LoginServlet.do" name="login_form" method="POST">
-            <label for="username">Username</label><br>
-            <input name="username" type="text" required><br><br>
-            
-            <label for="password">Password</label><br>
-            <input name="password" type="password" required><br><br>
-            
-            <input type="submit" value="Submit">
-        </form>
+        <header>
+            <div class="login-box">
+              <h1>Login</h1>
+                <!-- Login form that redirects to LoginServlet.doPost() -->
+                <form action="LoginServlet.do" name="login_form" method="POST">
+                    
+                    
+                    <div class="textbox">
+                        <i class="fas fa-user"></i>
+                        <input type ="text" placeholder="Username" name="username" required>
+                    </div>
+                    <div class="textbox">
+                        <i class="fas fa-lock"  ></i>
+                        <input type="password" placeholder="Password" name="password" required>
+                    </div>
+                    <input class="btn" type="submit" value="Sign in">
+                </form>
+            </div>
+        </header>
     </body>
 </html>

@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : Nov 27, 2020, 3:56:33 PM
-    Author     : Raul-Andrei Ginj-Groszhart
+    Author     : Raul-Andrei Ginj-Groszhart & Ashley Gregory
 
     TODO: - Create session
           - Check if user is logged

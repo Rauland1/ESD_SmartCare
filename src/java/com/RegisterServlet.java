@@ -65,7 +65,7 @@ public class RegisterServlet extends HttpServlet {
             else if(query[2].equals("doctor") || query[2].equals("nurse"))
             {
                 dbcon.insert(query);
-                request.setAttribute("message", "<span>" + query[2] + " accounts need to be authorised by admin! Please wait for further instructions.</span>");
+                request.setAttribute("message", "<span>" + query[2].substring(0, 1).toUpperCase() + query[2].substring(1) + " accounts need to be authorised by an admin! Please wait for further instructions.</span>");
             } 
             else
             {

@@ -9,37 +9,37 @@
           - If logged in, redirect to dashboard
            
 --%>
-
+<% if(session.getAttribute("username") != null){response.sendRedirect("dashboard.jsp");}%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style><%@include file="/WEB-INF/css/styles.css"%></style>
+        <style><%@include file="css/styles.css"%></style>
         <script src="https://kit.fontawesome.com/6b0d0ffdec.js" crossorigin="anonymous"></script>
         <title>SmartCare Login</title>
     </head>
 
     <body>
-        <header>
-            <div class="login-box">
-              <h1>Login</h1>
-                <!-- Login form that redirects to LoginServlet.doPost() -->
-                <form action="LoginServlet.do" name="login_form" method="POST">
-                    
-                    
-                    <div class="textbox">
-                        <i class="fas fa-user"></i>
-                        <input type ="text" placeholder="Username" name="username" required>
-                    </div>
-                    <div class="textbox">
-                        <i class="fas fa-lock"  ></i>
-                        <input type="password" placeholder="Password" name="password" required>
-                    </div>
-                    <input class="btn" type="submit" value="Sign in">
-                </form>
-            </div>
-        </header>
+        <div class="login-box">
+            <% if(request.getAttribute("msg") != null){ String message = (String) request.getAttribute("msg"); out.println(message);} %>
+            <h1>Login</h1>
+            <!-- Login form that redirects to LoginServlet.doPost() -->
+            <form action="UserServlet.do" name="login_form" method="POST">
+                <div class="textbox">
+                    <i class="fas fa-user"></i>
+                    <input type ="text" placeholder="Username" name="username" required>
+                </div>
+                <div class="textbox">
+                    <i class="fas fa-lock"  ></i>
+                    <input type="password" placeholder="Password" name="password" required>
+                </div>
+                <input class="btn" name="signin" type="submit" value="Sign in">
+                <a href="register.jsp">
+                    <input class="btn" name="register" type="button" value="Register">
+                </a>
+            </form>
+        </div>
     </body>
 </html>

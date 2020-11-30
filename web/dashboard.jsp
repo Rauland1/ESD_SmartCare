@@ -4,7 +4,14 @@
     Author     : Raul-Andrei Ginj-Groszhart
 --%>
 
-<% String username = (String) request.getAttribute("username"); %>
+<%
+String username = null;
+if(session.getAttribute("username") != null){
+    username = (String) session.getAttribute("username"); 
+} else {
+    response.sendRedirect("index.jsp");
+}
+%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -17,5 +24,8 @@
     </head>
     <body>
         <h1>Welcome, <% out.print(username);%></h1>
+        <form action="UserServlet.do" method="POST">
+            <input type="submit" name="logout" value="Logout">
+        </form>
     </body>
 </html>

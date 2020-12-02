@@ -35,14 +35,15 @@
                     <i class="fas fa-lock"  ></i>
                     <input type="password" placeholder="Repeat Password" name="password" required>
                 </div>
-                
-                <select name="role" required>
+                <div class="role-select">
+                    <i class="fas fa-user-tag"></i>
+                <select class="select" name="role" required>
                     <option value="role" disabled selected>Role</option>
                     <option value="patient">Patient</option>
                     <option value="doctor">Doctor</option>
                     <option value="nurse">Nurse</option>
                 </select>
-                
+                </div>
                 <input class="btn" type="submit" value="Register">
             </form>
         </div>

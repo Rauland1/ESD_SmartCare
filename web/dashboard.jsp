@@ -4,14 +4,12 @@
     Author     : Raul-Andrei Ginj-Groszhart
 --%>
 
+<%@ page import="model.User" %>
+
 <%
-String username = null;
-if(session.getAttribute("username") != null){
-    username = (String) session.getAttribute("username"); 
-} else {
-    response.sendRedirect("index.jsp");
-}
+    User user = (User) session.getAttribute("user");
 %>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -23,7 +21,9 @@ if(session.getAttribute("username") != null){
         <title> Welcome to Dashboard </title>
     </head>
     <body>
-        <h1>Welcome, <% out.print(username);%></h1>
+        <h1>Welcome, <% out.print(user.username);%></h1>
+        
+        <p>This is the <% out.print(user.role); %> dashboard</p>
         <form action="UserServlet.do" method="POST">
             <input type="submit" name="logout" value="Logout">
         </form>

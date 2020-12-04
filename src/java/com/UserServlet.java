@@ -22,6 +22,7 @@ import model.DBConnection;
  *
  * @author ggra9
  */
+
 public class UserServlet extends HttpServlet {
 
     /**
@@ -64,7 +65,7 @@ public class UserServlet extends HttpServlet {
                 if(dbcon.login(query))
                 {
                     session.setAttribute("username", query[0]);
-                    request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+                    response.sendRedirect("dashboard");
                 }
                 else
                 {
@@ -79,9 +80,6 @@ public class UserServlet extends HttpServlet {
                 response.sendRedirect("index.jsp");
             }
         }
-        
-        
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

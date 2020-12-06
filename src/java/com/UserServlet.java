@@ -74,11 +74,6 @@ public class UserServlet extends HttpServlet {
 
                 }
             }
-            else if(request.getParameter("logout") != null)
-            {
-                session.removeAttribute("username");
-                response.sendRedirect("index.jsp");
-            }
         }
     }
 

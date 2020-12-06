@@ -24,7 +24,7 @@
         <h1>Welcome, <% out.print(user.username);%></h1>
         
         <p>This is the <% out.print(user.role); %> dashboard</p>
-        <form action="UserServlet.do" method="POST">
+        <form action="logout" method="GET">
             <input type="submit" name="logout" value="Logout">
         </form>
     </body>

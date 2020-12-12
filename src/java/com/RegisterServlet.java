@@ -17,7 +17,7 @@ import model.DBConnection;
 
 /**
  *
- * @author ggra9
+ * @author Raul
  */
 public class RegisterServlet extends HttpServlet {
 

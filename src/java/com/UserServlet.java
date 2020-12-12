@@ -37,6 +37,7 @@ public class UserServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         
+        // Create session
         HttpSession session = request.getSession();
         
         response.setContentType("text/html;charset=UTF-8");
@@ -61,15 +62,20 @@ public class UserServlet extends HttpServlet {
                 // Request username and password 
                 query[0] = (String)request.getParameter("username");
                 query[1] = (String)request.getParameter("password");
-
+                
+                // If the user is found in the database
                 if(dbcon.login(query))
-                {
+                {   
+                    // Set a username attribute
                     session.setAttribute("username", query[0]);
-                    response.sendRedirect("dashboard");
+                    // Redirect to DashboardServlet
+                    response.sendRedirect("DashboardServlet.do");
                 }
                 else
                 {
+                    // Set error message attribute
                     request.setAttribute("msg", "<span>Make sure your credentials are correct!</span>");
+                    // Redirect to index.jsp
                     request.getRequestDispatcher("index.jsp").forward(request, response);
 
                 }

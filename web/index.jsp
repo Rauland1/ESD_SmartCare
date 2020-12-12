@@ -9,7 +9,7 @@
           - If logged in, redirect to dashboard
            
 --%>
-<% if(session.getAttribute("username") != null){response.sendRedirect("dashboard");}%>
+<% if(session.getAttribute("user") != null){response.sendRedirect("DashboardServlet.do");}%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

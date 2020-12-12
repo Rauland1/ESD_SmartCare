@@ -4,13 +4,6 @@
     Author     : Raul-Andrei Ginj-Groszhart
 --%>
 
-<%@ page import="model.User" %>
-
-<%
-    User user = (User) session.getAttribute("user");
-%>
-
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,10 +14,10 @@
         <title> Welcome to Dashboard </title>
     </head>
     <body>
-        <h1>Welcome, <% out.print(user.username);%></h1>
+        <h1>Welcome, <jsp:include page="navbar.jsp" /></h1>
         
-        <p>This is the <% out.print(user.role); %> dashboard</p>
-        <form action="logout" method="GET">
+        <p>This is the <jsp:getProperty name="user" property="role" /> dashboard</p>
+        <form action="LogoutServlet.do" method="POST">
             <input type="submit" name="logout" value="Logout">
         </form>
     </body>

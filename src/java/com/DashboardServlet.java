@@ -16,7 +16,6 @@ import model.User;
  *
  * @author Grant
  */
-@WebServlet(name = "DashboardServlet", urlPatterns = {"/dashboard"})
 public class DashboardServlet extends HttpServlet {
 
     /**
@@ -34,21 +33,22 @@ public class DashboardServlet extends HttpServlet {
         response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
         response.setHeader("Pragma", "no-cache");
         
-        Connection servletConnection = (Connection) request.getServletContext().getAttribute("connection");
+        // Get current session and DON'T create one if it doesn't exist already
+        HttpSession session = request.getSession(false);
         
-        DBConnection connection = new DBConnection(servletConnection);
-        
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
+        // Get database connection
+        DBConnection conn = (DBConnection) session.getAttribute("dbcon");        
 
+        // Get the username from the session
+        String username = (String) session.getAttribute("username");
+        
         if (username == null) {
             session.removeAttribute("username");
             response.sendRedirect("index.jsp");
             return;
         }
         
-        User user = connection.grabUserByName(username);
-        
+        User user = conn.grabUserByName(username);
         session.setAttribute("user", user);
 
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);

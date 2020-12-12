@@ -4,6 +4,7 @@
         <param-name>dbname</param-name>
         <param-value>SmartCare</param-value>
     </context-param>
+
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>com.RegisterServlet</servlet-class>
@@ -12,6 +13,15 @@
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>com.UserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.DashboardServlet</servlet-class>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -20,11 +30,21 @@
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/UserServlet.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/DashboardServlet.do</url-pattern>
+    </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             20
         </session-timeout>
     </session-config>
+    
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

@@ -4,7 +4,7 @@
     Author     : ggra9
 --%>
 
-<% if(session.getAttribute("username") != null){response.sendRedirect("dashboard.jsp");}%>
+<% if(session.getAttribute("user") != null){response.sendRedirect("DashboardServlet.do");}%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

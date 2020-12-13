@@ -94,6 +94,11 @@ span {
     font-family: Arial;
 }
 
+/* MAIN PAGE CONTENT */
+main {
+    padding: 1em 2em;
+}
+
 /* HEADER - NAVBAR */
 .header_bar{
     background-color: #24252A;
@@ -125,4 +130,16 @@ span {
 
 .nav_links li a:hover {
     color: #0088a9;
+}
+
+/* FOOTER */
+footer {
+    box-sizing: border-box;
+    background-color: #24252A;
+    padding: 1em 2em;
+    color: #edf0f1;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }

@@ -15,12 +15,13 @@
     </head>
     <body>
         <jsp:include page="header.jsp" />
-        
-        <p>Welcome, <jsp:getProperty name="user" property="username" />, this is your new dashboard!</p>
-        
-        <form action="LogoutServlet.do" method="POST">
-            <input type="submit" name="logout" value="Logout">
-        </form>
-        
+        <main>
+            <p>Welcome, <jsp:getProperty name="user" property="username" />, this is your new dashboard!</p>
+
+            <form action="LogoutServlet.do" method="POST">
+                <input type="submit" name="logout" value="Logout">
+            </form>
+        </main>
+        <jsp:include page="footer.jsp" />
     </body>
 </html>

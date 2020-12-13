@@ -22,7 +22,9 @@ public class User {
     }
     
     public String getUsername() {
-        return this.username;
+        String name = this.username;
+        String capitalUsername = name.substring(0,1).toUpperCase() + name.substring(1);
+        return capitalUsername;
     }
     
     public void setUsername(String username) {
@@ -30,6 +32,8 @@ public class User {
     }
     
     public String getRole() {
-        return this.role;
+        String role = this.role;
+        String capitalRole = role.substring(0,1).toUpperCase() + role.substring(1);
+        return capitalRole;
     }
 }

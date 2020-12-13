@@ -14,9 +14,9 @@
         <title> Welcome to Dashboard </title>
     </head>
     <body>
-        <h1>Welcome, <jsp:include page="navbar.jsp" /></h1>
+        <jsp:include page="navbar.jsp" />
         
-        <p>This is the <jsp:getProperty name="user" property="role" /> dashboard</p>
+        <p>This is the <jsp:getProperty name="user" property="role" /> dashboard.</p>
         <form action="LogoutServlet.do" method="POST">
             <input type="submit" name="logout" value="Logout">
         </form>

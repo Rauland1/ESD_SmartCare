@@ -11,13 +11,11 @@ package model;
  */
 public class User {
     
-    public String username;
-    public String password;
-    public String role;
+    private String username;
+    private String role;
 
-    public User(String username, String password, String role) {
+    public User(String username, String role) {
         this.username = username;
-        this.password = password;
         this.role = role;
     }
     
@@ -25,10 +23,6 @@ public class User {
         String name = this.username;
         String capitalUsername = name.substring(0,1).toUpperCase() + name.substring(1);
         return capitalUsername;
-    }
-    
-    public void setUsername(String username) {
-        this.username = username;
     }
     
     public String getRole() {

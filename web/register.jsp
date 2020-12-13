@@ -1,7 +1,7 @@
 <%-- 
     Document   : register
     Created on : Nov 29, 2020, 11:28:07 PM
-    Author     : ggra9
+    Author     : Raul
 --%>
 
 <% if(session.getAttribute("user") != null){response.sendRedirect("DashboardServlet.do");}%>
@@ -37,12 +37,12 @@
                 </div>
                 <div class="role-select">
                     <i class="fas fa-user-tag"></i>
-                <select class="select" name="role" required>
-                    <option value="role" disabled selected>Role</option>
-                    <option value="patient">Patient</option>
-                    <option value="doctor">Doctor</option>
-                    <option value="nurse">Nurse</option>
-                </select>
+                    <select class="login-select" name="role" required>
+                        <option value="role" disabled selected>Role</option>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="nurse">Nurse</option>
+                    </select>
                 </div>
                 <input class="btn" type="submit" value="Register">
             </form>

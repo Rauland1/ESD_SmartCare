@@ -9,7 +9,10 @@ body {
     margin: 0;  
     padding: 0;
     font-family: sans-serif;
-    background: url(images/smartcare.jpg);
+    background: url(images/smartcare.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -68,7 +71,7 @@ body {
     font-size: 26px;
     color: #0099cc;
 }
-.select{
+.login-select{
     color: black;
     font-size: 12px;
     width: 85%;
@@ -142,4 +145,9 @@ footer {
     width: 100%;
     position: absolute;
     bottom: 0;
+}
+
+/* PRESCRIPTION */
+textarea {
+    resize: none;
 }

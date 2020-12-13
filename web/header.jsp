@@ -1,7 +1,7 @@
 <%-- 
     Document   : navbar
     Created on : Dec 12, 2020, 9:30:06 PM
-    Author     : ggra9
+    Author     : Raul
 --%>
 <!-- Include JSTL library -->
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -27,7 +27,7 @@
                 <ul class="nav_links">
                     <li><a href="dashboard.jsp">Home</a></li>
                     <li><a href="timetable.jsp">Timetable</a></li>
-                    <li><a href="prescription.jsp">Issue Prescription</a></li>
+                    <li><a href="PrescriptionServlet.do?listPatients=t">Issue Prescription</a></li>
                     <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
                 </ul>
             </c:when>

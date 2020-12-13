@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
@@ -18,6 +20,8 @@ import model.User;
 public class DBConnection {
  
     Connection connection = null;
+    Statement statement = null;
+    ResultSet rs = null;
     
     public DBConnection() {}
  
@@ -78,6 +82,28 @@ public class DBConnection {
         return false;
     }
     
+    public List<Patient> patientsList() throws SQLException {
+        List<Patient> patientList = new ArrayList<>();
+        
+        String sql = "SELECT * FROM patients";
+        statement = connection.createStatement();
+        rs = statement.executeQuery(sql);
+        
+        while(rs.next()){
+            int id = rs.getInt("pID");
+            String title = rs.getString("pTitle");
+            String fName = rs.getString("pFirst_name");
+            String lName = rs.getString("pLast_name");
+            String type = rs.getString("pType");
+            
+            Patient patient = new Patient(id, title, fName, lName, type);
+            patientList.add(patient);
+        }
+        
+        return patientList;
+    }
+    
+    // Create new User object
     public User grabUserByName(String username) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE UNAME=?", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -89,10 +115,9 @@ public class DBConnection {
             users.next();
             
             String uname = users.getString("uname");
-            String passwd = users.getString("passwd");
-            String role = users.getString("role");
+            String role = users.getString("urole");
 
-            return new User(uname, passwd, role);
+            return new User(uname, role);
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }

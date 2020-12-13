@@ -1,7 +1,7 @@
 <%-- 
     Document   : conError
     Created on : Nov 30, 2020, 2:57:48 PM
-    Author     : ggra9
+    Author     : Raul
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

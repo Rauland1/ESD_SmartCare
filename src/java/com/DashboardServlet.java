@@ -34,7 +34,7 @@ public class DashboardServlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
         
         // Get current session and DON'T create one if it doesn't exist already
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         
         // Get database connection
         DBConnection conn = (DBConnection) session.getAttribute("dbcon");        

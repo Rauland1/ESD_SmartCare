@@ -94,9 +94,10 @@ public class DBConnection {
             String title = rs.getString("pTitle");
             String fName = rs.getString("pFirst_name");
             String lName = rs.getString("pLast_name");
+            String addr = rs.getString("pAddress");
             String type = rs.getString("pType");
             
-            Patient patient = new Patient(id, title, fName, lName, type);
+            Patient patient = new Patient(id, title, fName, lName, addr, type);
             patientList.add(patient);
         }
         

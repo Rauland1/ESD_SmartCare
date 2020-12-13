@@ -13,7 +13,7 @@
     <nav>
         <c:choose>
             <%-- If the role is admin --%>
-            <c:when test="${user.getRole() == 'Admin'}">
+            <c:when test="${user.role == 'Admin'}">
                 <ul class="nav_links">
                     <li><a href="dashboard.jsp">Home</a></li>
                     <li><a href="records.jsp">Records</a></li>
@@ -23,7 +23,7 @@
                 </ul>
             </c:when>
             <%-- If the role is nurse OR doctor --%>
-            <c:when test="${user.getRole() == 'Nurse' || user.getRole() == 'Doctor'}">
+            <c:when test="${user.role == 'Nurse' || user.role == 'Doctor'}">
                 <ul class="nav_links">
                     <li><a href="dashboard.jsp">Home</a></li>
                     <li><a href="timetable.jsp">Timetable</a></li>
@@ -32,14 +32,14 @@
                 </ul>
             </c:when>
             <%-- If the role is patient --%>
-            <c:when test="${user.getRole() == 'Patient'}">
+            <c:otherwise>
                 <ul class="nav_links">
                     <li><a href="dashboard.jsp">Home</a></li>
                     <li><a href="booking.jsp">Book Appointment</a></li>
                     <li><a href="prescription.jsp">Request Prescription</a></li>
                     <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
                 </ul>
-            </c:when>
+            </c:otherwise>
         </c:choose>
     </nav>
 </header>

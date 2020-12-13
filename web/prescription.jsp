@@ -16,20 +16,26 @@
     <body>
         <jsp:include page="header.jsp" />
         <main>
-            <h2>Issue patient prescription: </h2>
-            <table>
-                <tr>
-                  <th>Patient ID</th>
-                  <th>Patient Name</th>
-                </tr>
-                <c:forEach items="${patientsList}" var="patient">
-                    <tr>
-                        <td>${patient.id}</td>
-                        <td>${patient.title}, ${patient.name}</td>
-                    </tr>
-                </c:forEach>
-            </table>
-            
+            <c:if test="${user.role == 'Nurse' || user.role == 'Doctor'}">
+                <h2>Select patient:</h2>
+                <form name="patient_prescription_form" action="PrescriptionServlet.do" method="POST">
+                    <table>
+                        <tr>
+                          <th>Patient Name</th>
+                          <th>Patient Address</th>
+                          <th>Select Patient</th>
+                        </tr>
+                        <c:forEach items="${patientsList}" var="patient">
+                            <tr>
+                                <td>${patient.title} ${patient.name}</td>
+                                <td>${patient.address}</td>
+                                <td><input type="checkbox" name="${patient.id}"></td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                    <input type="submit" name="issue_prescription" value="Submit">
+                </form>
+            </c:if>
         </main>
         <jsp:include page="footer.jsp" />
     </body>

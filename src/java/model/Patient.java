@@ -15,12 +15,14 @@ public class Patient {
     private String title;
     private String name;
     private String type;
+    private String address;
        
     // Constructor to be used with the new DB format
-    public Patient(int id, String title, String fName, String lName, String type){
+    public Patient(int id, String title, String fName, String lName, String address, String type){
         this.id = id;
         this.title = title;
         this.name = fName + ' ' + lName;
+        this.address = address;
         this.type = type;
     }
     
@@ -40,4 +42,7 @@ public class Patient {
         return type;
     }
     
+    public String getAddress() {
+        return address;
+    }
 }

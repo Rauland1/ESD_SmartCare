@@ -11,14 +11,16 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
 
-        <title> Welcome to Dashboard </title>
+        <title> SmartCare <jsp:getProperty name="user" property="role"/> Dashboard </title>
     </head>
     <body>
-        <jsp:include page="navbar.jsp" />
+        <jsp:include page="header.jsp" />
         
-        <p>This is the <jsp:getProperty name="user" property="role" /> dashboard.</p>
+        <p>Welcome, <jsp:getProperty name="user" property="username" />, this is your new dashboard!</p>
+        
         <form action="LogoutServlet.do" method="POST">
             <input type="submit" name="logout" value="Logout">
         </form>
+        
     </body>
 </html>

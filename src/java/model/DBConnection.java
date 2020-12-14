@@ -166,4 +166,63 @@ public class DBConnection {
 
         return employeeID;
     }
+    
+    public int grabPatientId(String uname) throws SQLException {
+        
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM patients WHERE UNAME=?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+        preparedStatement.setString(1, uname);
+
+        ResultSet patients = preparedStatement.executeQuery();
+
+        patients.next();
+
+        int id = patients.getInt("pID");
+
+        return id;
+    }
+    
+    public String getEmployeeName (int id) throws SQLException{
+        String employeeName = null;
+        
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employee WHERE eID=?", PreparedStatement.RETURN_GENERATED_KEYS);
+        preparedStatement.setString(1, String.valueOf(id));
+        
+        ResultSet rs = preparedStatement.executeQuery();
+        
+        rs.next();
+        
+        String title = rs.getString("etitle");
+        String fName = rs.getString("efirst_name");
+        String lName = rs.getString("elast_name");
+        
+        employeeName = title + ' ' + fName + ' ' + lName;
+        
+        return employeeName;
+    }
+    
+    public String viewPrescriptions(int patientID) throws SQLException{
+        StringBuilder prescriptionTable = new StringBuilder();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM prescription WHERE pID=?", PreparedStatement.RETURN_GENERATED_KEYS);
+        
+        preparedStatement.setString(1, String.valueOf(patientID));
+        ResultSet rs = preparedStatement.executeQuery();
+        
+        while(rs.next()){
+            int pres_id = rs.getInt("prID");
+            int employee_id = rs.getInt("eID");
+            
+            String employee_name = getEmployeeName(employee_id);
+            
+            String prescriptionDetails = rs.getString("prDetails");
+            
+            String row = "<tr><td>" + employee_name + "</td><td>" + prescriptionDetails + "</td><td><input type='checkbox' name='prescriptionID' value=" + pres_id + "</tr>";
+            
+            prescriptionTable.append(row);
+        }
+        
+        return prescriptionTable.toString();
+    }
+    
+    
 }

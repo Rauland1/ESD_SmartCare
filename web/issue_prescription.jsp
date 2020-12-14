@@ -16,6 +16,7 @@
         
         <jsp:include page="header.jsp" />
         <main>
+            
             <% if(request.getAttribute("msg") != null){ String message = (String) request.getAttribute("msg"); out.println(message);} %>
             <h2>Issue Prescription for ${requestScope.patientName}, Patient ID ${param.patientID}:</h2>
             <form action="PrescriptionServlet.do" method="POST">

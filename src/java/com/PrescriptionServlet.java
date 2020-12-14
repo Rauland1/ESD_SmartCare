@@ -62,7 +62,7 @@ public class PrescriptionServlet extends HttpServlet {
             }
             
             request.setAttribute("patientName", patientName);
-            request.getRequestDispatcher("prescription.jsp").forward(request, response);
+            request.getRequestDispatcher("issue_prescription.jsp").forward(request, response);
         }
         else if(request.getParameter("add_prescription") != null)
         {
@@ -82,7 +82,14 @@ public class PrescriptionServlet extends HttpServlet {
             String msg = "<h1>New prescription has been added!</h1>";
             request.setAttribute("msg", msg);
             
-            request.getRequestDispatcher("prescription.jsp").forward(request, response);
+            request.getRequestDispatcher("issue_prescription.jsp").forward(request, response);
+        }
+        else if(request.getParameter("viewPrescription").equals("true")){
+            String prescriptionRows = dbcon.viewPrescriptions(dbcon.grabPatientId((String) session.getAttribute("username")));
+            
+            request.setAttribute("pRow", prescriptionRows);
+            request.getRequestDispatcher("view_prescriptions.jsp").forward(request, response);
+            
         }
         // ELSE NO PATIENT HAS BEEN SELECTED
         // what if more patients selected? - it uses the first one that was selected

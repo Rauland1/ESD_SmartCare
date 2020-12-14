@@ -36,7 +36,7 @@
                 <ul class="nav_links">
                     <li><a href="dashboard.jsp">Home</a></li>
                     <li><a href="booking.jsp">Book Appointment</a></li>
-                    <li><a href="patients.jsp">Request Prescription</a></li>
+                    <li><a href="PrescriptionServlet.do?viewPrescription=true">View Prescriptions</a></li>
                     <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
                 </ul>
             </c:otherwise>

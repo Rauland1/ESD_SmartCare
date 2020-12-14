@@ -23,7 +23,7 @@ import model.Patient;
  *
  * @author Raul-Adnrei Ginj-Groszhart
  */
-public class PrescriptionServlet extends HttpServlet {
+public class PatientsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,18 +44,18 @@ public class PrescriptionServlet extends HttpServlet {
         if(session.getAttribute("dbcon")==null)
         {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
-        } 
-        else if(request.getParameter("listPatients").equals("t"))
+        }
+        else if(request.getParameter("patientType") == null)
         {
-            List<Patient> patientsList = dbcon.patientsList();
+            request.getRequestDispatcher("patients.jsp").forward(request, response);
+        }
+        else if(request.getParameter("patient_type_submit") != null)
+        {
+            String patientType = request.getParameter("patientType");
+            List<Patient> patientsList = dbcon.patientsList(patientType);
             session.setAttribute("patientsList", patientsList);
-            request.getRequestDispatcher("prescription.jsp").forward(request, response);
+            request.getRequestDispatcher("patients.jsp").forward(request, response);
         }
-        else
-        {
-            request.getRequestDispatcher("prescription.jsp").forward(request, response);
-        }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -73,7 +73,7 @@ public class PrescriptionServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(PrescriptionServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PatientsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -91,7 +91,7 @@ public class PrescriptionServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(PrescriptionServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PatientsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

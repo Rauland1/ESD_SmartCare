@@ -82,10 +82,17 @@ public class DBConnection {
         return false;
     }
     
-    public List<Patient> patientsList() throws SQLException {
+    public List<Patient> patientsList(String patientType) throws SQLException {
         List<Patient> patientList = new ArrayList<>();
-        
         String sql = "SELECT * FROM patients";
+        
+        if("all".equals(patientType)){
+            sql = "SELECT * FROM patients";
+        } else if("nhs".equals(patientType)) {
+            sql = "SELECT * FROM patients WHERE pType='NHS'";
+        } else if("private".equals(patientType)) {
+            sql = "SELECT * FROM patients WHERE pType='private'";
+        }
         statement = connection.createStatement();
         rs = statement.executeQuery(sql);
         

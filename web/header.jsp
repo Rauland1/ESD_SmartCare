@@ -27,7 +27,7 @@
                 <ul class="nav_links">
                     <li><a href="dashboard.jsp">Home</a></li>
                     <li><a href="timetable.jsp">Timetable</a></li>
-                    <li><a href="PrescriptionServlet.do?listPatients=t">Issue Prescription</a></li>
+                    <li><a href="PatientsServlet.do">View Patients</a></li>
                     <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
                 </ul>
             </c:when>
@@ -36,7 +36,7 @@
                 <ul class="nav_links">
                     <li><a href="dashboard.jsp">Home</a></li>
                     <li><a href="booking.jsp">Book Appointment</a></li>
-                    <li><a href="prescription.jsp">Request Prescription</a></li>
+                    <li><a href="patients.jsp">Request Prescription</a></li>
                     <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
                 </ul>
             </c:otherwise>

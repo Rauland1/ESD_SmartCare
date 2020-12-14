@@ -124,12 +124,46 @@ public class DBConnection {
             
             String uname = users.getString("uname");
             String role = users.getString("urole");
-
+            
             return new User(uname, role);
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
  
         return null;
+    }
+    
+    public void insertPrescription(String prescription[]){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO prescription (oid, eid, pid, prdetails) VALUES (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            preparedStatement.setString(1, "14");
+            preparedStatement.setString(2, prescription[0]);
+            preparedStatement.setString(3, prescription[1]);
+            preparedStatement.setString(4, prescription[2]);
+            
+            preparedStatement.executeUpdate();
+ 
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public String getEmplyeeIDFromUsername(String username) throws SQLException{
+        
+        username = username.toLowerCase();
+        String employeeID = null;
+
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM EMPLOYEE WHERE UNAME=?", PreparedStatement.RETURN_GENERATED_KEYS);
+        ps.setString(1, username);
+        ResultSet rs = ps.executeQuery();
+        if(rs.next())
+        {
+            int eID = rs.getInt("eid");
+            employeeID = String.valueOf(eID);
+        }
+
+        return employeeID;
     }
 }

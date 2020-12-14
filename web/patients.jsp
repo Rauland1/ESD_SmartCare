@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
-        <title>SmartCare - Prescriptions</title>
+        <title>SmartCare - Patients</title>
     </head>
     <body>
         <jsp:include page="header.jsp" />
@@ -41,9 +41,12 @@
                                     <td>${patient.type}</td>
                                     <td>${patient.title} ${patient.name}</td>
                                     <td>${patient.address}</td>
-                                    <td><input type="checkbox" name="${patient.id}"></td>
+                                    <td><input type="checkbox" name="patientID" value="${patient.id}"></td>
                                 </tr>
                             </c:forEach>
+                            <tr>
+                                <td colspan="4"><input type="submit" name="issue_prescription" value="Issue New Prescription"></td>
+                            </tr>
                         </table>
                     </form>
                 </c:otherwise>

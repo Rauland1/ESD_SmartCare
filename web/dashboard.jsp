@@ -10,6 +10,7 @@
     response.setDateHeader("Expires", -1);
     if(session.getAttribute("user") == null){response.sendRedirect("index.jsp");}
 %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,8 +23,22 @@
     <body>
         <jsp:include page="header.jsp" />
         <main>
+            
             <h2>Welcome, <jsp:getProperty name="user" property="username" />, this is your new dashboard!</h2>
-
+            
+            <c:choose>
+                <c:when test="${user.role == 'Admin'}">
+                    <p>--- Content for Admin --- 
+                        Registration Approval </p>
+                </c:when>
+                <c:when test="${user.role == 'Nurse' || user.role == 'Doctor'}">
+                    --- Content for nurses/doctors --- <br />
+                </c:when>
+                <c:otherwise>
+                    --- Content for patient --- <br />
+                </c:otherwise>
+            </c:choose>
+            
             <form action="LogoutServlet.do" method="POST">
                 <input type="submit" name="logout" value="Logout">
             </form>

@@ -24,6 +24,10 @@
         <servlet-name>PatientsServlet</servlet-name>
         <servlet-class>com.PatientsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PrescriptionServlet</servlet-name>
+        <servlet-class>com.PrescriptionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>PatientsServlet</servlet-name>
         <url-pattern>/PatientsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PrescriptionServlet</servlet-name>
+        <url-pattern>/PrescriptionServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -3,6 +3,9 @@ package com;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +31,7 @@ public class DashboardServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         
         response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
         response.setHeader("Pragma", "no-cache");
@@ -37,7 +40,7 @@ public class DashboardServlet extends HttpServlet {
         HttpSession session = request.getSession();
         
         // Get database connection
-        DBConnection conn = (DBConnection) session.getAttribute("dbcon");        
+        DBConnection dbcon = (DBConnection) session.getAttribute("dbcon");        
 
         // Get the username from the session
         String username = (String) session.getAttribute("username");
@@ -48,7 +51,14 @@ public class DashboardServlet extends HttpServlet {
             return;
         }
         
-        User user = conn.grabUserByName(username);
+        User user = dbcon.grabUserByName(username);
+        
+        if(user.getRole().equals("Admin"))
+        {
+            String dashboard_content = dbcon.checkReg();
+            request.setAttribute("regTable", dashboard_content);
+        }
+        
         session.setAttribute("user", user);
 
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
@@ -66,7 +76,11 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -80,7 +94,11 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

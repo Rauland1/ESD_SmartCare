@@ -24,12 +24,23 @@
         <jsp:include page="header.jsp" />
         <main>
             
-            <h2>Welcome, <jsp:getProperty name="user" property="username" />, this is your new dashboard!</h2>
+            <h2>Welcome, <jsp:getProperty name="user" property="username"/>!</h2>
             
             <c:choose>
                 <c:when test="${user.role == 'Admin'}">
-                    <p>--- Content for Admin --- 
-                        Registration Approval </p>
+                    ${requestScope.msg}
+                    <h2>Approve registrations</h2>
+                    <form action='ApproveRegistrationServlet.do' method='POST'>
+                        <table>
+                            <tr>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Approve/Decline</th>
+                            </tr>
+                            ${requestScope.regTable}
+                            </table>
+                        <input type='submit' value='Approve registration' name='approve_reg'>
+                    </form> <br /><br />
                 </c:when>
                 <c:when test="${user.role == 'Nurse' || user.role == 'Doctor'}">
                     --- Content for nurses/doctors --- <br />

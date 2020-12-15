@@ -226,7 +226,9 @@ public class DBConnection {
             
             String prescriptionDetails = rs.getString("prDetails");
             
-            String row = "<tr><td>" + employee_name + "</td><td>" + prescriptionDetails + "</td><td><input type='checkbox' name='prescriptionID' value='" + pres_id + "'></td></tr>";
+            String prescriptionRequest = rs.getString("prRequest");
+            
+            String row = "<tr><td>" + employee_name + "</td><td>" + prescriptionDetails +  "</td><td><input type='checkbox' name='prescriptionID' value='" + pres_id + "'></td><td>" + prescriptionRequest + "</td></tr>";
             
             prescriptionTable.append(row);
         }
@@ -274,5 +276,17 @@ public class DBConnection {
         ps.close();
     }
     
-    
+    public void updatePrescription(String prescriptionID){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE prescription SET prREQUEST='requested' WHERE prID=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            preparedStatement.setInt(1, Integer.parseInt(prescriptionID));
+           
+            preparedStatement.executeUpdate();
+ 
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

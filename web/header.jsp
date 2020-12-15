@@ -27,7 +27,7 @@
                 <ul class="nav_links">
                     <li><a href="DashboardServlet.do">Home</a></li>
                     <li><a href="timetable.jsp">Timetable</a></li>
-                    <li><a href="PatientsServlet.do">View Patients</a></li>
+                    <li><a href="PatientsServlet.do">View Patients</a></li> 
                     <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
                 </ul>
             </c:when>

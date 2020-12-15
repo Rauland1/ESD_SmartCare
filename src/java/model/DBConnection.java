@@ -289,4 +289,58 @@ public class DBConnection {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public String checkPrescription(String username) throws SQLException {
+        StringBuilder confirmPrescriptionTable = new StringBuilder();
+        
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM prescription WHERE eID=? AND prRequest='requested'");
+        ps.setString(1, getEmplyeeIDFromUsername(username));
+        
+        ResultSet rs = ps.executeQuery();
+        
+        if(rs.next()){
+            do {
+                int patientID = rs.getInt("pID");
+                String patient_name = getPatientNameFromID(patientID);
+                String prescription_details = rs.getString("prDetails");
+                int prID = rs.getInt("prID");
+                
+                String row = "<tr><td>" + patient_name + "</td><td>" + prescription_details + "</td><td><input type='checkbox' name='presID' value='" + prID + "'></td></tr>";
+                confirmPrescriptionTable.append(row);
+            } while(rs.next());
+        }
+        
+        closeAll(ps, rs);
+        return confirmPrescriptionTable.toString();
+    }
+    
+    public void confirmPrescription(int prID) throws SQLException
+    {
+        PreparedStatement ps = connection.prepareStatement("UPDATE prescription SET prRequest='confirmed' WHERE prID=?");
+        
+        ps.setInt(1, prID);
+        ps.executeUpdate();
+        
+        ps.close();
+    }
+    
+    public String getPatientNameFromID(int pID) throws SQLException{
+        
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM patients WHERE PID=?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+        preparedStatement.setInt(1, pID);
+
+        ResultSet patients = preparedStatement.executeQuery();
+
+        patients.next();
+
+        String title = patients.getString("pTitle");
+        String fName = patients.getString("pFirst_Name");
+        String lName = patients.getString("pLast_Name");
+        String fullName = title + ' ' + fName + ' ' + lName;
+
+        closeAll(preparedStatement, patients);
+        return fullName;
+        
+    }
 }

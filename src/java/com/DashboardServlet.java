@@ -58,6 +58,12 @@ public class DashboardServlet extends HttpServlet {
             String dashboard_content = dbcon.checkReg();
             request.setAttribute("regTable", dashboard_content);
         }
+        else if(user.getRole().equals("Doctor") || user.getRole().equals("Nurse")) 
+        {
+            
+            String dashboard_content = dbcon.checkPrescription((String)session.getAttribute("username"));
+            request.setAttribute("presTable", dashboard_content);
+        }
         
         session.setAttribute("user", user);
 

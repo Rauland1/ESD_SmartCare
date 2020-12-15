@@ -43,7 +43,19 @@
                     </form> <br /><br />
                 </c:when>
                 <c:when test="${user.role == 'Nurse' || user.role == 'Doctor'}">
-                    --- Content for nurses/doctors --- <br />
+                  ${requestScope.msg}
+                    <h2>Approve requests for prescription</h2>
+                    <form action='ApprovePrescriptionServlet.do' method='POST'>
+                        <table>
+                            <tr>
+                                <th>Patient Name</th>
+                                <th>Prescription Details</th>
+                                <th>Approve/Decline</th>
+                            </tr>
+                            ${requestScope.presTable}
+                            </table>
+                        <input type='submit' value='Approve request' name='approve_request'>
+                    </form> <br /><br />
                 </c:when>
                 <c:otherwise>
                     --- Content for patient --- <br />

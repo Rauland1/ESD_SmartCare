@@ -22,6 +22,7 @@
                     <th>Issued By</th>
                     <th>Prescription Details</th>
                     <th>Select Prescription</th>
+                    <th>Prescription Request</th>
                 </tr>
                 ${requestScope.pRow}
                 <tr>

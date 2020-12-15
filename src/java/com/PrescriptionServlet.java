@@ -84,6 +84,14 @@ public class PrescriptionServlet extends HttpServlet {
             
             request.getRequestDispatcher("issue_prescription.jsp").forward(request, response);
         }
+        else if(request.getParameter("request_prescription") != null){
+            
+            String prescriptionID = request.getParameter("prescriptionID");
+            dbcon.updatePrescription(prescriptionID);
+            
+            request.getRequestDispatcher("view_prescriptions.jsp").forward(request, response);
+            
+        }
         else if(request.getParameter("viewPrescription").equals("true")){
             String prescriptionRows = dbcon.viewPrescriptions(dbcon.grabPatientId((String) session.getAttribute("username")));
             

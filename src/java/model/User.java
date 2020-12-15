@@ -21,13 +21,15 @@ public class User {
     
     public String getUsername() {
         String name = this.username;
+        // capitalize the first letter for aesthetic purposes
         String capitalUsername = name.substring(0,1).toUpperCase() + name.substring(1);
-        return capitalUsername;
+        return capitalUsername.trim();
     }
     
     public String getRole() {
         String role = this.role;
+        // capitalize the first letter for aesthetic purposes
         String capitalRole = role.substring(0,1).toUpperCase() + role.substring(1);
-        return capitalRole;
+        return capitalRole.trim();
     }
 }

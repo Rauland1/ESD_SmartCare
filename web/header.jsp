@@ -15,7 +15,7 @@
             <%-- If the role is admin --%>
             <c:when test="${user.role == 'Admin'}">
                 <ul class="nav_links">
-                    <li><a href="dashboard.jsp">Home</a></li>
+                    <li><a href="DashboardServlet.do">Home</a></li>
                     <li><a href="records.jsp">Records</a></li>
                     <li><a href="operations.jsp">Operations</a></li>
                     <li><a href="documents.jsp">Documents</a></li>
@@ -25,16 +25,16 @@
             <%-- If the role is nurse OR doctor --%>
             <c:when test="${user.role == 'Nurse' || user.role == 'Doctor'}">
                 <ul class="nav_links">
-                    <li><a href="dashboard.jsp">Home</a></li>
+                    <li><a href="DashboardServlet.do">Home</a></li>
                     <li><a href="timetable.jsp">Timetable</a></li>
-                    <li><a href="PatientsServlet.do">View Patients</a></li>
+                    <li><a href="PatientsServlet.do">View Patients</a></li> 
                     <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
                 </ul>
             </c:when>
             <%-- If the role is patient --%>
             <c:otherwise>
                 <ul class="nav_links">
-                    <li><a href="dashboard.jsp">Home</a></li>
+                    <li><a href="DashboardServlet.do">Home</a></li>
                     <li><a href="booking.jsp">Book Appointment</a></li>
                     <li><a href="PrescriptionServlet.do?viewPrescription=true">View Prescriptions</a></li>
                     <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>

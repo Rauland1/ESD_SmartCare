@@ -33,6 +33,11 @@ public class DBConnection {
     {
         connection = _con;
     }
+    
+    public void closeAll(PreparedStatement ps, ResultSet rs) throws SQLException{
+        ps.close();
+        rs.close();
+    }
  
     // Insert user records into database
     public void insert(String[] str) {
@@ -61,7 +66,7 @@ public class DBConnection {
         preparedStatement.setString(2, str[1]);
  
         ResultSet results = preparedStatement.executeQuery();
- 
+        
         return results.next();
     }
  
@@ -107,7 +112,8 @@ public class DBConnection {
             Patient patient = new Patient(id, title, fName, lName, addr, type);
             patientList.add(patient);
         }
-        
+        rs.close();
+        statement.close();
         return patientList;
     }
     
@@ -163,7 +169,8 @@ public class DBConnection {
             int eID = rs.getInt("eid");
             employeeID = String.valueOf(eID);
         }
-
+        
+        closeAll(ps, rs);
         return employeeID;
     }
     
@@ -178,8 +185,10 @@ public class DBConnection {
         patients.next();
 
         int id = patients.getInt("pID");
-
+        
+        closeAll(preparedStatement, patients);
         return id;
+        
     }
     
     public String getEmployeeName (int id) throws SQLException{
@@ -198,6 +207,7 @@ public class DBConnection {
         
         employeeName = title + ' ' + fName + ' ' + lName;
         
+        closeAll(preparedStatement, rs);
         return employeeName;
     }
     
@@ -216,13 +226,121 @@ public class DBConnection {
             
             String prescriptionDetails = rs.getString("prDetails");
             
-            String row = "<tr><td>" + employee_name + "</td><td>" + prescriptionDetails + "</td><td><input type='checkbox' name='prescriptionID' value=" + pres_id + "</tr>";
+            String prescriptionRequest = rs.getString("prRequest");
+            
+            String row = "<tr><td>" + employee_name + "</td><td>" + prescriptionDetails +  "</td><td><input type='checkbox' name='prescriptionID' value='" + pres_id + "'></td><td>" + prescriptionRequest + "</td></tr>";
             
             prescriptionTable.append(row);
         }
-        
+        closeAll(preparedStatement, rs);
         return prescriptionTable.toString();
     }
     
+    public String checkReg() throws SQLException{
+        StringBuilder confirmRegTable = new StringBuilder();
+        
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM users WHERE registration_type=?");
+        ps.setString(1, "pending");
+        
+        ResultSet rs = ps.executeQuery();
+        
+        if(rs.next()){
+            do {
+                String username = rs.getString("uname");
+                String role = rs.getString("urole");
+
+                String row = "<tr><td>" + username + "</td><td>" + role + "</td><td><input type='checkbox' name='regUsername' value='" + username + "'></td></tr>";
+                confirmRegTable.append(row);
+            } while(rs.next());
+        }
+        
+        closeAll(ps, rs);
+        
+        if(confirmRegTable.length() != 0){
+            return confirmRegTable.toString();
+        } else {
+            String msg = "<td colspan='2'><span>No new accounts to be approved</span></td>";
+            confirmRegTable.append(msg);
+            return confirmRegTable.toString();
+        }
+        
+    }
     
+    public void confirmReg(String username) throws SQLException
+    {
+        PreparedStatement ps = connection.prepareStatement("UPDATE users SET registration_type='confirmed' WHERE uname=?");
+        
+        ps.setString(1, username);
+        ps.executeUpdate();
+        
+        ps.close();
+    }
+    
+    public void updatePrescription(String prescriptionID){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE prescription SET prREQUEST='requested' WHERE prID=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            preparedStatement.setInt(1, Integer.parseInt(prescriptionID));
+           
+            preparedStatement.executeUpdate();
+ 
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public String checkPrescription(String username) throws SQLException {
+        StringBuilder confirmPrescriptionTable = new StringBuilder();
+        
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM prescription WHERE eID=? AND prRequest='requested'");
+        ps.setString(1, getEmplyeeIDFromUsername(username));
+        
+        ResultSet rs = ps.executeQuery();
+        
+        if(rs.next()){
+            do {
+                int patientID = rs.getInt("pID");
+                String patient_name = getPatientNameFromID(patientID);
+                String prescription_details = rs.getString("prDetails");
+                int prID = rs.getInt("prID");
+                
+                String row = "<tr><td>" + patient_name + "</td><td>" + prescription_details + "</td><td><input type='checkbox' name='presID' value='" + prID + "'></td></tr>";
+                confirmPrescriptionTable.append(row);
+            } while(rs.next());
+        }
+        
+        closeAll(ps, rs);
+        return confirmPrescriptionTable.toString();
+    }
+    
+    public void confirmPrescription(int prID) throws SQLException
+    {
+        PreparedStatement ps = connection.prepareStatement("UPDATE prescription SET prRequest='confirmed' WHERE prID=?");
+        
+        ps.setInt(1, prID);
+        ps.executeUpdate();
+        
+        ps.close();
+    }
+    
+    public String getPatientNameFromID(int pID) throws SQLException{
+        
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM patients WHERE PID=?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+        preparedStatement.setInt(1, pID);
+
+        ResultSet patients = preparedStatement.executeQuery();
+
+        patients.next();
+
+        String title = patients.getString("pTitle");
+        String fName = patients.getString("pFirst_Name");
+        String lName = patients.getString("pLast_Name");
+        String fullName = title + ' ' + fName + ' ' + lName;
+
+        closeAll(preparedStatement, patients);
+        return fullName;
+        
+    }
 }

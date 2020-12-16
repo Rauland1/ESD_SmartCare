@@ -112,7 +112,7 @@ main {
     color: #edf0f1;
 }
 
-.header_bar li, a{
+.header_bar li > a {
     font-size: 16px;
     color: #edf0f1;
     text-decoration: none;
@@ -122,16 +122,16 @@ main {
     list-style: none;
 }
 
-.nav_links li {
+.nav_links > li {
     display: inline-block;
     padding: 0px 20px;
 }
 
-.nav_links li a {
+.nav_links li > a {
     transition: all 0.3s ease 0s;
 }
 
-.nav_links li a:hover {
+.nav_links li > a:hover {
     color: #0088a9;
 }
 
@@ -144,7 +144,7 @@ footer {
     text-align: center;
     width: 100%;
     position: absolute;
-    bottom: 10;
+    bottom: 0;
 }
 
 /* PRESCRIPTION */

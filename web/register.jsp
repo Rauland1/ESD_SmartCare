@@ -44,7 +44,7 @@
                         <option value="nurse">Nurse</option>
                     </select>
                 </div>
-                <input class="btn" type="submit" value="Register">
+                <input class="btn" type="submit" name="registration_form" value="Register">
             </form>
         </div>
     </body>

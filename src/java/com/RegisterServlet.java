@@ -38,13 +38,6 @@ public class RegisterServlet extends HttpServlet {
         
         HttpSession session = request.getSession(false);
        
-        // Array to hold requested parameters
-        String[] query = new String[3];
-        // Request username and password 
-        query[0] = (String)request.getParameter("username");
-        query[1] = (String)request.getParameter("password");
-        query[2] = (String)request.getParameter("role");
-        
         // Create a new connection to the database
         DBConnection dbcon = new DBConnection();
         // Connect to the database - request the connection attribute from the Listener
@@ -80,13 +73,16 @@ public class RegisterServlet extends HttpServlet {
             request.getRequestDispatcher("DashboardServlet.do").forward(request, response);
             
         }
-        else if(request.getParameter("completeRegistration").equals("true")){
-
-            request.getRequestDispatcher("complete_registration.jsp").forward(request, response);
-            
-        } 
-        else
+        else if(request.getParameter("registration_form") != null)
         {
+            
+            // Array to hold requested parameters
+            String[] query = new String[3];
+            // Request username, password and role
+            query[0] = (String)request.getParameter("username");
+            query[1] = (String)request.getParameter("password");
+            query[2] = (String)request.getParameter("role");
+        
             if(dbcon.exists(query[0]))
             {
                 request.setAttribute("message", "<span>Username '" + query[0] + "' is already taken! Please choose another username.</span>");
@@ -104,6 +100,11 @@ public class RegisterServlet extends HttpServlet {
             
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
+        else if(request.getParameter("completeRegistration").equals("true")){
+
+            request.getRequestDispatcher("complete_registration.jsp").forward(request, response);
+            
+        } 
         
 
         

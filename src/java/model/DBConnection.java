@@ -40,20 +40,38 @@ public class DBConnection {
         rs.close();
     }
  
-    // Insert user records into database
-    public void insert(String[] str) {
+    // Insert new user into the database
+    public void insert(String[] str) { 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users VALUES (?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            String sql = null;
+            String type = null;
+            
+            if(str[2].equals("patient"))
+            {
+                sql = "INSERT INTO patients (uname) VALUES (?)";
+                type = "confirmed";
+            } else {
+                sql = "INSERT INTO employee (uname) VALUES (?)";
+                type = "pending";
+            }
+            
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
  
             preparedStatement.setString(1, str[0].trim());
             preparedStatement.setString(2, str[1]);
-            preparedStatement.setString(3, str[2]);
+            preparedStatement.setString(3, type);
+            preparedStatement.setString(4, str[2]);
  
             preparedStatement.executeUpdate();
  
             preparedStatement.close();
+            
+            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, str[0].trim());
+            ps.executeUpdate();
+            ps.close();
  
-            System.out.println("1 row added.");
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -384,18 +402,23 @@ public class DBConnection {
         ResultSet user = preparedStatement.executeQuery();
 
         if(user.next()){
-
+            
             String[] details = new String[4];
 
             details[0] = user.getString(dbn + "Title");
             details[1] = user.getString(dbn + "First_Name");
             details[2] = user.getString(dbn + "Last_Name");
             details[3] = user.getString(dbn + "Address");
-
-            for(String detail : details){
-                if(detail.equals("") || detail.isEmpty()){
-                    message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.";
-                    break;
+            
+            if(user.wasNull()){
+                return message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.";
+            } else {
+            
+                for(String detail : details){
+                    if(detail.isEmpty() || detail.length() == 0){
+                        message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.";
+                        break;
+                    }
                 }
             }
         }

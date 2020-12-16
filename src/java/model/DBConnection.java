@@ -384,7 +384,6 @@ public class DBConnection {
     
     public String checkFields (String uname, String urole) throws SQLException {        
         
-        String message = null;
         String sql = null;
         String dbn = null;
         
@@ -411,26 +410,17 @@ public class DBConnection {
             details[3] = user.getString(dbn + "Address");
             
             if(user.wasNull()){
-                return message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.";
-            } else {
-            
-                for(String detail : details){
-                    if(detail.isEmpty() || detail.length() == 0){
-                        message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.";
-                        break;
-                    }
-                }
+                String message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.<br /><br />";
+                return message;
+            } else {      
+                return "";
             }
         }
         
-        if(message != null){
-            return message;
-        } else {
-            return "";
-        }
+        return "";
     }
     
-      public void completeRegistration(String details[], String username, String urole){
+    public void completeRegistration(String details[], String username, String urole){
         try {
             
             String sql = null;

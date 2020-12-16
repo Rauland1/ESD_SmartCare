@@ -52,6 +52,7 @@ public class DashboardServlet extends HttpServlet {
         }
         
         User user = dbcon.grabUserByName(username);
+        session.setAttribute("user", user);
         
         if(user.getRole().equals("Admin"))
         {
@@ -61,12 +62,13 @@ public class DashboardServlet extends HttpServlet {
         else if(user.getRole().equals("Doctor") || user.getRole().equals("Nurse")) 
         {
             
-            String dashboard_content = dbcon.checkPrescription((String)session.getAttribute("username"));
+            String dashboard_content = dbcon.checkPrescription(user.getUsername());
             request.setAttribute("presTable", dashboard_content);
         }
         
-        session.setAttribute("user", user);
-
+        String details = dbcon.checkFields(username, user.getRole());
+        request.setAttribute("details", details);
+        
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
 

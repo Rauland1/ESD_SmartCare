@@ -8,6 +8,8 @@ package com;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -48,7 +50,9 @@ public class BookAppointmentServlet extends HttpServlet {
         request.setAttribute("eID", eID);
         if(request.getParameter("date") != null){
             String date = (String)request.getParameter("date");
-            request.setAttribute("date", date);            
+            request.setAttribute("date", date);  
+            List employees = dbcon.staffList();
+            request.setAttribute("staff", employees);
         }
         
         

@@ -36,7 +36,7 @@
                             <tr>
                                 <th>Username</th>
                                 <th>Role</th>
-                                <th>Approve/Decline</th>
+                                <th>Approve</th>
                             </tr>
                             ${requestScope.regTable}
                             </table>
@@ -52,7 +52,7 @@
                             <tr>
                                 <th>Patient Name</th>
                                 <th>Prescription Details</th>
-                                <th>Approve/Decline</th>
+                                <th>Approve</th>
                             </tr>
                             ${requestScope.presTable}
                             </table>
@@ -62,7 +62,6 @@
                 <c:otherwise>
                     ${requestScope.details}
                     ${requestScope.msg}
-                    --- Content for Patient ---
                 </c:otherwise>
             </c:choose>
             

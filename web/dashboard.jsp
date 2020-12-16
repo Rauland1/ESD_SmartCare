@@ -58,7 +58,8 @@
                     </form> <br /><br />
                 </c:when>
                 <c:otherwise>
-                    --- Content for patient --- <br />
+                    ${requestScope.msg}
+                    --- Content for Patient ---
                 </c:otherwise>
             </c:choose>
             

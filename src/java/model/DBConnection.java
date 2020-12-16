@@ -118,6 +118,25 @@ public class DBConnection {
         return patientList;
     }
     
+    public List staffList() throws SQLException { //NELSON
+        List staffList = new ArrayList<>();
+        String sql = "SELECT * FROM EMPLOYEE";
+
+        statement = connection.createStatement();
+        rs = statement.executeQuery(sql);
+        
+        while(rs.next()){
+            String fName = rs.getString("EFIRST_NAME");
+            String lName = rs.getString("ELAST_NAME");
+            
+            User user = new User(fName, lName);
+            staffList.add(user);
+        }
+        rs.close();
+        statement.close();
+        return staffList;
+    }
+    
     // Create new User object
     public User grabUserByName(String username) {
         try {

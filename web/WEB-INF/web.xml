@@ -36,6 +36,10 @@
         <servlet-name>ApprovePrescriptionServlet</servlet-name>
         <servlet-class>com.ApprovePrescriptionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BookAppointmentServlet</servlet-name>
+        <servlet-class>com.BookAppointmentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -67,6 +71,10 @@
     <servlet-mapping>
         <servlet-name>ApprovePrescriptionServlet</servlet-name>
         <url-pattern>/ApprovePrescriptionServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookAppointmentServlet</servlet-name>
+        <url-pattern>/BookAppointmentServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

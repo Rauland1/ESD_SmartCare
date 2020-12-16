@@ -28,6 +28,7 @@
             
             <c:choose>
                 <c:when test="${user.role == 'Admin'}">
+                    ${requestScope.details}
                     ${requestScope.msg}
                     <h2>Approve registrations</h2>
                     <form action='ApproveRegistrationServlet.do' method='POST'>
@@ -43,7 +44,8 @@
                     </form> <br /><br />
                 </c:when>
                 <c:when test="${user.role == 'Nurse' || user.role == 'Doctor'}">
-                  ${requestScope.msg}
+                    ${requestScope.details}
+                    ${requestScope.msg}
                     <h2>Approve requests for prescription</h2>
                     <form action='ApprovePrescriptionServlet.do' method='POST'>
                         <table>
@@ -58,7 +60,9 @@
                     </form> <br /><br />
                 </c:when>
                 <c:otherwise>
-                    --- Content for patient --- <br />
+                    ${requestScope.details}
+                    ${requestScope.msg}
+                    --- Content for Patient ---
                 </c:otherwise>
             </c:choose>
             

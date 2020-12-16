@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DBConnection;
+import model.User;
 
 /**
  *
@@ -55,7 +56,35 @@ public class RegisterServlet extends HttpServlet {
         if(session.getAttribute("dbcon")==null)
         {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
+        } 
+        else if(request.getParameter("complete_reg") != null){
+
+            // Array to hold requested parameters
+            String[] details = new String[5];
+            // Request username and password 
+            details[0] = (String)request.getParameter("title");
+            details[1] = (String)request.getParameter("fName");
+            details[2] = (String)request.getParameter("lName");
+            details[3] = (String)request.getParameter("house_no");
+            details[4] = (String)request.getParameter("post_code");
+            
+            if(session.getAttribute("user") != null) {
+                User user = (User)session.getAttribute("user");
+            
+                dbcon.completeRegistration(details, (String)session.getAttribute("username"),user.getRole());
+                request.setAttribute("msg", "Registration Complete!");
+            } else {
+                response.sendRedirect("conError.jsp");
+            }
+            
+            request.getRequestDispatcher("DashboardServlet.do").forward(request, response);
+            
         }
+        else if(request.getParameter("completeRegistration").equals("true")){
+
+            request.getRequestDispatcher("complete_registration.jsp").forward(request, response);
+            
+        } 
         else
         {
             if(dbcon.exists(query[0]))

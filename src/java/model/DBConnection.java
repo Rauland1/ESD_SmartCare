@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import model.User;
 
 /**
@@ -343,4 +344,82 @@ public class DBConnection {
         return fullName;
         
     }
+    
+    public String checkFields (String uname, String urole) throws SQLException {        
+        
+        String message = null;
+        String sql = null;
+        String dbn = null;
+        
+        if(urole.equals("Admin") || urole.equals("Doctor") || urole.equals("Nurse")){
+            sql = "SELECT * FROM employee WHERE uname=?";
+            dbn = "e";
+        }
+        else {
+            sql = "SELECT * FROM patients WHERE uname=?";
+            dbn = "p";
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        preparedStatement.setString(1, uname);
+
+        ResultSet user = preparedStatement.executeQuery();
+
+        if(user.next()){
+
+            String[] details = new String[4];
+
+            details[0] = user.getString(dbn + "Title");
+            details[1] = user.getString(dbn + "First_Name");
+            details[2] = user.getString(dbn + "Last_Name");
+            details[3] = user.getString(dbn + "Address");
+
+            for(String detail : details){
+                if(detail.equals("") || detail.isEmpty()){
+                    message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.";
+                    break;
+                }
+            }
+        }
+        
+        if(message != null){
+            return message;
+        } else {
+            return "";
+        }
+    }
+    
+      public void completeRegistration(String details[], String username, String urole){
+        try {
+            
+            String sql = null;
+            
+            if(urole.equals("Admin") || urole.equals("Doctor") || urole.equals("Nurse")) {
+                sql = "UPDATE employee SET eTitle=?, eFirst_Name=?, eLast_Name=?, eAddress=? WHERE uname=?";
+            }
+            else {
+                sql = "UPDATE patients SET pTitle=?, pFirst_Name=?,pLast_Name=?, pAddress=? WHERE uname=?";
+            }
+            
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            preparedStatement.setString(1, details[0]);
+            preparedStatement.setString(2, details[1]);
+            preparedStatement.setString(3, details[2]);
+            
+            PlaceAPI placeapi = new PlaceAPI(details[4]);
+            
+            String full_address = details[3] + " " + placeapi.getAddressXML();
+            
+            preparedStatement.setString(4, full_address);
+            
+            preparedStatement.setString(5, username);
+            
+            preparedStatement.executeUpdate();
+ 
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

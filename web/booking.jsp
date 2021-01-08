@@ -22,31 +22,26 @@
     </head>
     <body>
         <jsp:include page="header.jsp" />
+        <h3>Please select a date:</h3>  
         <pre>
-        <form action="BookAppointmentServlet.do">
+        <form action="BookAppointmentServlet.do">            
             <input type="text" name="date" placeholder="Click to View Calendar" id="datepicker"> 
             <br>
             <input type="submit" value="Select Date">
-            <br>
-            <select class="form-control" name="staff" id="staff">
-                <option value="-1">Click to view staff</option> 
-                <%
-                    try{
-                        
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        out.println("Error");
-                    }
-                    %>
-            </select>
-        </form>        
-        </pre>    
-                
+            <br>                  
+        </form>         
+        </pre> 
+        
         <h3>Patient Name: <jsp:getProperty name="user" property="username"/></h3>
         <h3>Patient ID: <%=(request.getAttribute("pID"))%></h3>
-        <h3>Date: <%=request.getAttribute("date")%></h3>
-        <h3>Staff ID: <%=(request.getAttribute("staff"))%></h3>
-        
+        <h3>Date: <%=request.getAttribute("date")%></h3>         
+        <form action="BookAppointmentServlet.do">
+            <% if (request.getAttribute("date") != null){
+                %><h3>Staff Name: <%=request.getAttribute("staff")%></h3>                  
+                <input type="submit" value="Confirm Booking"><%
+            }%>
+            <br>                           
+        </form>
         <jsp:include page="footer.jsp" />
     </body>
 </html>

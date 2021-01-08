@@ -136,25 +136,47 @@ public class DBConnection {
         return patientList;
     }
     
-    public List staffList() throws SQLException { //NELSON
-        List staffList = new ArrayList<>();
+    public String staffList() throws SQLException { //NELSON -- UPDATED FUNCTION & bookservlet -- updated bookng.jsp -- created confirm_booking.jsp --created insertbooking function
+        
+        StringBuilder availableStaff = new StringBuilder();
         String sql = "SELECT * FROM EMPLOYEE";
 
         statement = connection.createStatement();
         rs = statement.executeQuery(sql);
         
+        availableStaff.append("<select class=\"form-control\" name=\"staff\" id=\"staff\">");
+        availableStaff.append("<option disabled selected hidden>Choose a doctor or nurse</option>");
         while(rs.next()){
+            String title = rs.getString("ETITLE");
             String fName = rs.getString("EFIRST_NAME");
             String lName = rs.getString("ELAST_NAME");
-            
-            User user = new User(fName, lName);
-            staffList.add(user);
-        }
+            int ID = rs.getInt("EID");
+            String name = (ID + " " + title + " " + fName + " " + lName);
+            String row = ("<option name=\"staff\" value=\""+name+"\"\">" +name+ "</option> ");
+            availableStaff.append(row);
+        }        
+        availableStaff.append("</select>");
         rs.close();
         statement.close();
-        return staffList;
+        
+        return availableStaff.toString();        
     }
-    
+    public void insertBooking(String eid, String pid, String date, String time){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO BOOKING_SLOTS (SID, EID, PID, SDATE, STIME) VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            preparedStatement.setString(1, "14");
+            preparedStatement.setString(2, " ");
+            preparedStatement.setString(3, " ");
+            preparedStatement.setString(4, " ");
+            preparedStatement.setString(5, date);
+            preparedStatement.setString(6, time);            
+            preparedStatement.executeUpdate(); 
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Create new User object
     public User grabUserByName(String username) {
         try {

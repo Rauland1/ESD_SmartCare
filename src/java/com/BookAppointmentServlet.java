@@ -6,10 +6,7 @@
 package com;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -21,7 +18,7 @@ import model.DBConnection;
 
 /**
  *
- * @author Chris
+ * @author Nelson Hobday
  */
 public class BookAppointmentServlet extends HttpServlet {
 
@@ -33,6 +30,7 @@ public class BookAppointmentServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException{
@@ -44,20 +42,26 @@ public class BookAppointmentServlet extends HttpServlet {
         DBConnection dbcon = (DBConnection) session.getAttribute("dbcon");     
         
         // Grab Appointment details to show on screen
-        int pID = dbcon.grabPatientId((String) session.getAttribute("username"));
-        String eID = dbcon.getEmplyeeIDFromUsername((String)session.getAttribute("username"));      
-        request.setAttribute("pID", pID);
-        request.setAttribute("eID", eID);
+        int PID = dbcon.grabPatientId((String) session.getAttribute("username"));  
+        request.setAttribute("pID", PID);
         if(request.getParameter("date") != null){
             String date = (String)request.getParameter("date");
             request.setAttribute("date", date);  
-            List employees = dbcon.staffList();
+            String employees = dbcon.staffList();
             request.setAttribute("staff", employees);
         }
-        
-        
-        
-        
+        if (request.getParameter("staff")!= null){
+            String name = request.getParameter("staff");
+            String[] staffName = name.split(" ");
+            String pid = Integer.toString(PID);
+            String EID = staffName[0];
+            request.setAttribute("EID", EID);
+            request.setAttribute("staffName", name);
+            String date = (String)request.getParameter("date");
+            String time = "00:00";
+            dbcon.insertBooking(EID, pid, date, time);
+            request.getRequestDispatcher("confirm_booking.jsp").forward(request, response);
+        }
         request.getRequestDispatcher("booking.jsp").forward(request, response);
     }
 

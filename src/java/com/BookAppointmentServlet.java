@@ -7,6 +7,7 @@ package com;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DBConnection;
+import java.text.SimpleDateFormat;  
+import java.util.Date;  
 
 /**
  *
@@ -31,9 +34,12 @@ public class BookAppointmentServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      * @throws java.sql.SQLException
+     * @throws java.text.ParseException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException{
+            throws ServletException, IOException, SQLException, ParseException{
+        
+        response.setContentType("text/html;charset=UTF-8");
         
         // Get current session and DON'T create one if it doesn't exist already
         HttpSession session = request.getSession();
@@ -45,9 +51,11 @@ public class BookAppointmentServlet extends HttpServlet {
         int PID = dbcon.grabPatientId((String) session.getAttribute("username"));  
         request.setAttribute("pID", PID);
         if(request.getParameter("date") != null){
-            String date = (String)request.getParameter("date");
-            request.setAttribute("date", date);  
-            String employees = dbcon.staffList();
+            String date = request.getParameter("date");
+            Date date1 = new SimpleDateFormat("MM/dd/yyyy").parse(date); 
+            request.setAttribute("date", date); 
+            // Get list of available staff for selected day
+            String employees = dbcon.staffList(date1);
             request.setAttribute("staff", employees);
         }
         if (request.getParameter("staff")!= null){
@@ -59,7 +67,17 @@ public class BookAppointmentServlet extends HttpServlet {
             request.setAttribute("staffName", name);
             String date = (String)request.getParameter("date");
             String time = "00:00";
-            dbcon.insertBooking(EID, pid, date, time);
+            
+            // Array to hold requested parameters
+            String[] details = new String[4];
+            // Request username and password 
+            details[0] = (String)EID;
+            details[1] = (String)pid;
+            details[2] = (String)date;
+            details[3] = (String)time;           
+            
+            dbcon.insertBooking(details);
+            request.setAttribute("msg", "Booking Complete!");
             request.getRequestDispatcher("confirm_booking.jsp").forward(request, response);
         }
         request.getRequestDispatcher("booking.jsp").forward(request, response);
@@ -79,7 +97,7 @@ public class BookAppointmentServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (SQLException ex) {
+        } catch (SQLException | ParseException ex) {
             Logger.getLogger(BookAppointmentServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -97,7 +115,7 @@ public class BookAppointmentServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (SQLException ex) {
+        } catch (SQLException | ParseException ex) {
             Logger.getLogger(BookAppointmentServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

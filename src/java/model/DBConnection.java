@@ -1,12 +1,17 @@
 package model;
 
 import java.sql.Connection;
+import java.text.SimpleDateFormat;  
+//import java.util.Date;  
+import java.sql.Date;  
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
+//import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -136,25 +141,53 @@ public class DBConnection {
         return patientList;
     }
     
-    public List staffList() throws SQLException { //NELSON
-        List staffList = new ArrayList<>();
-        String sql = "SELECT * FROM EMPLOYEE";
+    /**
+     *
+     * @param day
+     * @return
+     * @throws SQLException
+     */
+    public String staffList(String day) throws SQLException { 
+
+        StringBuilder availableStaff = new StringBuilder();
+        String sql = "SELECT * FROM EMPLOYEE WHERE EDAYS LIKE '%"+day+"%'";
 
         statement = connection.createStatement();
         rs = statement.executeQuery(sql);
         
+        availableStaff.append("<select class=\"form-control\" name=\"staff\" id=\"staff\">");
+        availableStaff.append("<option disabled selected hidden>Choose a doctor or nurse</option>");
         while(rs.next()){
+            String title = rs.getString("ETITLE");
             String fName = rs.getString("EFIRST_NAME");
             String lName = rs.getString("ELAST_NAME");
-            
-            User user = new User(fName, lName);
-            staffList.add(user);
-        }
+            int ID = rs.getInt("EID");
+            String name = (ID + " " + title + " " + fName + " " + lName);
+            String row = ("<option name=\"staff\" value=\""+name+"\"\">" +name+ "</option> ");
+            availableStaff.append(row);
+        }        
+        availableStaff.append("</select>");
         rs.close();
         statement.close();
-        return staffList;
+        
+        return availableStaff.toString();        
     }
     
+    public void insertBooking(String details[]) throws ParseException{
+
+        //Date sqlDate = Date.valueOf(details[2]);
+        try {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO BOOKING_SLOTS (EID, PID, SDATE, STIME) VALUES (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setString(1, details[0]);
+                preparedStatement.setString(2, details[1]);
+                preparedStatement.setString(3, details[2]);
+                preparedStatement.setString(4, details[3]);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Create new User object
     public User grabUserByName(String username) {
         try {
@@ -384,7 +417,6 @@ public class DBConnection {
     
     public String checkFields (String uname, String urole) throws SQLException {        
         
-        String message = null;
         String sql = null;
         String dbn = null;
         
@@ -411,26 +443,17 @@ public class DBConnection {
             details[3] = user.getString(dbn + "Address");
             
             if(user.wasNull()){
-                return message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.";
-            } else {
-            
-                for(String detail : details){
-                    if(detail.isEmpty() || detail.length() == 0){
-                        message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.";
-                        break;
-                    }
-                }
+                String message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.<br /><br />";
+                return message;
+            } else {      
+                return "";
             }
         }
         
-        if(message != null){
-            return message;
-        } else {
-            return "";
-        }
+        return "";
     }
     
-      public void completeRegistration(String details[], String username, String urole){
+    public void completeRegistration(String details[], String username, String urole){
         try {
             
             String sql = null;

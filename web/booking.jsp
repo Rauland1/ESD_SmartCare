@@ -26,13 +26,34 @@
         <h3>Please select a date:</h3>  
         <pre>
         
-        <form action="BookAppointmentServlet.do">            
+        <form action="BookAppointmentServlet.do">   
+            <div id="select_date">
             <input type="date" name="date" placeholder="Click to View Calendar" id="datepicker"> 
-            <br>
-            <input type="submit" value="Select Date">
-            <br>                  
+            </div>
+            <div id="select_time">
+                <select name="time">
+                    <option>08:00</option>
+                    <option>08:30</option>
+                    <option>09:00</option>
+                    <option>09:30</option>
+                    <option>10:00</option>
+                    <option>10:30</option>
+                    <option>11:00</option>
+                    <option>11:30</option>
+                    <option>12:00</option>
+                    <option>12:30</option>
+                    <option>13:00</option>
+                    <option>13:30</option>
+                    <option>14:00</option>
+                    <option>14:30</option>             
+                    <option>15:00</option>
+                    <option>15:30</option>
+                    <option>16:00</option>
+                    <option>16:30</option>                 
+                </select>
+            </div>
+            <input type="submit" value="Select Appointment">                 
         </form>  
-        
         </pre> 
         
         <h3>Patient Name: <jsp:getProperty name="user" property="username"/></h3>

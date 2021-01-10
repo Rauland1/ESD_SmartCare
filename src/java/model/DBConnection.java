@@ -1,13 +1,17 @@
 package model;
 
 import java.sql.Connection;
+import java.text.SimpleDateFormat;  
+//import java.util.Date;  
+import java.sql.Date;  
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -139,38 +143,12 @@ public class DBConnection {
     
     /**
      *
-     * @param date
+     * @param day
      * @return
      * @throws SQLException
      */
-    public String staffList(Date date) throws SQLException { 
-        
-        int digit = date.getDay();
-        String day = "";
-        switch (digit) {
-            case 1:
-              day = "Mo";
-              break;
-            case 2:
-              day = "Tu";
-              break;
-            case 3:
-              day = "We";
-              break;
-            case 4:
-              day = "Th";
-              break;
-            case 5:
-              day = "Fr";
-              break;
-            case 6:
-              day = "Sa";
-              break;
-            case 0:
-              day = "Su";
-              break;
-          }
-        
+    public String staffList(String day) throws SQLException { 
+
         StringBuilder availableStaff = new StringBuilder();
         String sql = "SELECT * FROM EMPLOYEE WHERE EDAYS LIKE '%"+day+"%'";
 
@@ -194,16 +172,18 @@ public class DBConnection {
         
         return availableStaff.toString();        
     }
-    public void insertBooking(String details[]){
+    
+    public void insertBooking(String details[]) throws ParseException{
+
+        //Date sqlDate = Date.valueOf(details[2]);
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO BOOKING_SLOTS (EID, PID, SDATE, STIME) VALUES (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            
-            preparedStatement.setString(1, details[0]);
-            preparedStatement.setString(2, details[1]);
-            preparedStatement.setString(3, details[2]);
-            preparedStatement.setString(4, details[3]);        
-            preparedStatement.executeUpdate(); 
-            preparedStatement.close();
+            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO BOOKING_SLOTS (EID, PID, SDATE, STIME) VALUES (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setString(1, details[0]);
+                preparedStatement.setString(2, details[1]);
+                preparedStatement.setString(3, details[2]);
+                preparedStatement.setString(4, details[3]);
+                preparedStatement.executeUpdate();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }

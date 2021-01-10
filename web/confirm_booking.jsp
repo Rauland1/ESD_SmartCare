@@ -12,12 +12,16 @@
         <style><%@include file="css/styles.css"%></style>
         <title>SmartCare - Booking Confirmed</title>
     </head>
+    
     <body>
         <jsp:include page="header.jsp" />
+        <div class="confirm_booking">
         <h1>Booking confirmed!</h1>
-        <h3><%=request.getAttribute("staffName")%></h3
-        <h3><%=request.getAttribute("EID")%></h3>
-        <h3><%=request.getAttribute("PID")%></h3>
+        <h3>Practitioner: <%=request.getAttribute("staffName")%></h3
+        <h3>Patient: <%=session.getAttribute("username")%></h3>
+        <h3>Appointment Date: <%=session.getAttribute("date")%></h3>
+        </div>
         <jsp:include page="footer.jsp" />
+       
     </body>
 </html>

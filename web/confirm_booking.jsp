@@ -20,6 +20,7 @@
         <h3>Practitioner: <%=request.getAttribute("staffName")%></h3
         <h3>Patient: <%=session.getAttribute("username")%></h3>
         <h3>Appointment Date: <%=session.getAttribute("date")%></h3>
+        <h3>Appointment Time: <%=session.getAttribute("time")%></h3>
         </div>
         <jsp:include page="footer.jsp" />
        

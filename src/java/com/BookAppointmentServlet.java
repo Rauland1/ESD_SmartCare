@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import model.DBConnection;
 import java.text.SimpleDateFormat;  
 import java.util.Date;  
-
 /**
  *
  * @author Nelson Hobday
@@ -54,11 +53,12 @@ public class BookAppointmentServlet extends HttpServlet {
         String time = request.getParameter("time");
         request.setAttribute("date", date); 
          
-        if(request.getParameter("date") != null){  
+        if(request.getParameter("date") != null && request.getParameter("time") != null){  
             session.setAttribute("date", date);
-            session.setAttribute("time", time);
-            Date date1 = new SimpleDateFormat("MM/dd/yyyy").parse(date);             
+            session.setAttribute("time", time);    
+                         
             // Get list of available staff for selected day
+            Date date1 = new SimpleDateFormat("MM/dd/yyyy").parse(date);
             int digit = date1.getDay();
             String day = "";
             switch (digit) {
@@ -83,30 +83,35 @@ public class BookAppointmentServlet extends HttpServlet {
                 case 0:
                   day = "Su";
                   break;
-              }
+            }            
             String employees = dbcon.staffList(day);
             request.setAttribute("staff", employees);
+            
+            // Set proceed to booking confirmation message.
+            String pr_msg = "Now confirm your booking.";
+            request.setAttribute("pr_msg", pr_msg);
         }
+        // After selecting date & time show available staff and overview of booking details
         if (request.getParameter("staff")!= null){
             String name = request.getParameter("staff");
             String[] staffName = name.split(" ");
             String pid = Integer.toString(PID);
             String EID = staffName[0];
-            request.setAttribute("staffName", name);
-                
-            
+            request.setAttribute("staffName", name);           
 
             // Array to hold requested parameters
             String[] details = new String[4];
             // Request username and password 
             details[0] = (String)EID;
             details[1] = (String)pid;
-            details[2] = (String)date;
+            details[2] = (String)session.getAttribute("date");
             details[3] = (String)session.getAttribute("time");           
-
-            dbcon.insertBooking(details);
-            request.setAttribute("msg", "Booking Complete!");
-            request.getRequestDispatcher("confirm_booking.jsp").forward(request, response);
+            
+            // Show booking confirmation if successful
+            if (dbcon.insertBooking(details)){
+                request.setAttribute("msg", "Booking Complete!");
+                request.getRequestDispatcher("confirm_booking.jsp").forward(request, response);
+            }          
         }
         request.getRequestDispatcher("booking.jsp").forward(request, response);
     }

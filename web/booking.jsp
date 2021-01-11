@@ -48,8 +48,12 @@
         <option>16:30</option>                 
         </select>
         </div>
-<input type="submit" value="Select Appointment">               
-        </form> 
+<input type="submit" value="Select Appointment">    
+        
+        </form>
+<%if (request.getAttribute("pr_msg")!= null){
+        %><h3><%=request.getAttribute("pr_msg")%></h3><%
+        }%> 
         </div> 
         </pre> 
         <div class="appointment_details">

@@ -173,7 +173,7 @@ public class DBConnection {
         return availableStaff.toString();        
     }
     
-    public void insertBooking(String details[]) throws ParseException{
+    public boolean insertBooking(String details[]) throws ParseException{
 
         //Date sqlDate = Date.valueOf(details[2]);
         try {
@@ -183,10 +183,12 @@ public class DBConnection {
                 preparedStatement.setString(3, details[2]);
                 preparedStatement.setString(4, details[3]);
                 preparedStatement.executeUpdate();
+                return true;
             }
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
     // Create new User object
     public User grabUserByName(String username) {

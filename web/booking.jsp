@@ -62,7 +62,7 @@
         <h3>Date: <%=request.getAttribute("date")%></h3>     
         <h3>Time: <%=session.getAttribute("time")%></h3>  
         <form action="BookAppointmentServlet.do">
-            <% if (request.getAttribute("date") != null){
+            <% if (request.getAttribute("pr_msg") != null) {
                 %><h3>Staff Name: <%=request.getAttribute("staff")%></h3>                  
                 <input type="submit" value="Confirm Booking"><%
             }%>

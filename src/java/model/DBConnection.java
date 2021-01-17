@@ -1,22 +1,16 @@
 package model;
 
 import java.sql.Connection;
-import java.text.SimpleDateFormat;  
-//import java.util.Date;  
-import java.sql.Date;  
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.ResultSet; // Removed unused imports
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
-//import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpSession;
-import model.User;
 
 /**
  *
@@ -144,13 +138,14 @@ public class DBConnection {
     /**
      *
      * @param day
+     * @param time
      * @return
      * @throws SQLException
      */
-    public String staffList(String day) throws SQLException { 
+    public String staffList(String day, String time) throws SQLException { // Added time as input
 
-        StringBuilder availableStaff = new StringBuilder();
-        String sql = "SELECT * FROM EMPLOYEE WHERE EDAYS LIKE '%"+day+"%'";
+        StringBuilder availableStaff = new StringBuilder();      
+        String sql = "SELECT * FROM EMPLOYEE WHERE (EDAYS LIKE '%"+day+"%') AND (ESHIFT_START < ('"+time+"'))"; // Revised SQL to show correctly scheduled staff
 
         statement = connection.createStatement();
         rs = statement.executeQuery(sql);

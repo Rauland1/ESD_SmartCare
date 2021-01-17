@@ -83,8 +83,9 @@ public class BookAppointmentServlet extends HttpServlet {
                 case 0:
                   day = "Su";
                   break;
-            }            
-            String employees = dbcon.staffList(day);
+            } 
+            //float timeValue = Float.parseFloat(time.replace(":",""));
+            String employees = dbcon.staffList(day, time);
             request.setAttribute("staff", employees);
             
             // Set proceed to booking confirmation message.

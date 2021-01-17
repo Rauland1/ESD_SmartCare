@@ -17,11 +17,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
-
+        <style><%@include file="css/styles.css"%></style>
         <title> SmartCare <jsp:getProperty name="user" property="role"/> Dashboard </title>
     </head>
     <body>
         <jsp:include page="header.jsp" />
+        <div class="dashboard_view">        
         <main>
             
             <h2>Welcome, <jsp:getProperty name="user" property="username"/>!</h2>
@@ -69,6 +70,7 @@
                 <input type="submit" name="logout" value="Logout">
             </form>
         </main>
+        </div>
         <jsp:include page="footer.jsp" />
     </body>
 </html>

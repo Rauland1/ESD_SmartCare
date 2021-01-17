@@ -21,8 +21,8 @@
         <h3>Patient: <%=session.getAttribute("username")%></h3>
         <h3>Appointment Date: <%=session.getAttribute("date")%></h3>
         <h3>Appointment Time: <%=session.getAttribute("time")%></h3>
-        </div>
+        <form action="DashboardServlet.do"><input type="submit" value="Return to Dashboard"></form>
+        </div>        
         <jsp:include page="footer.jsp" />
-       
     </body>
 </html>

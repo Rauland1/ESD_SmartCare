@@ -9,14 +9,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 //import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import model.User;
+import model.BookingSlot;
 
 /**
  *
@@ -487,4 +490,54 @@ public class DBConnection {
         }
     }
     
+    public float getTurnoverForDay(Date date) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String stringDate = formatter.format(date);
+            
+            String sql = "SELECT * FROM booking_slots WHERE sDate = '" + stringDate + "'";//2020-11-01 - 2020-12-00
+            
+            PreparedStatement queryStatement = connection.prepareStatement(sql);
+            
+            ResultSet results = queryStatement.executeQuery();
+            
+            List<BookingSlot> bookingSlots = new ArrayList<>();
+            List<String> ids = new ArrayList<>();
+            
+            while (results.next()) {
+                int id = results.getInt(1);
+                int employeeId = results.getInt(2);
+                int patientId = results.getInt(3);
+                Date resultDate = results.getDate(4);
+                java.sql.Time resultTime = results.getTime(5);
+                
+                ids.add(String.valueOf(id));
+                bookingSlots.add(new BookingSlot(id, employeeId, patientId, resultDate, resultTime));
+            }
+            
+            String idsCommaSeperated = String.join(",", ids);
+            String secondSql = "SELECT * FROM operations WHERE sID IN (" + idsCommaSeperated + ")"; //7,8,9
+           
+            PreparedStatement state = connection.prepareStatement(secondSql);
+            
+            ResultSet moreResults = state.executeQuery();
+            
+            List<Operation> operations = new ArrayList<>();
+            
+            while (moreResults.next()) {
+                int id = moreResults.getInt(1);
+                int bookingSlotId = moreResults.getInt(2);
+                float duration = moreResults.getFloat(3);
+                float charge = moreResults.getFloat(4);
+                
+                operations.add(new Operation(id, bookingSlotId, duration, charge));
+            }
+            
+            return 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return 0;
+    }
 }

@@ -3,6 +3,7 @@ package com;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +41,9 @@ public class DashboardServlet extends HttpServlet {
         HttpSession session = request.getSession();
         
         // Get database connection
-        DBConnection dbcon = (DBConnection) session.getAttribute("dbcon");        
+        DBConnection dbcon = (DBConnection) session.getAttribute("dbcon");       
+        
+        dbcon.getTurnoverForDay(new Date(2020 - 1900, 12 - 1, 18));
 
         // Get the username from the session
         String username = (String) session.getAttribute("username");

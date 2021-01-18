@@ -46,7 +46,15 @@ public class PrescriptionServlet extends HttpServlet {
         {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
         } 
-        else if(request.getParameter("issue_prescription") != null && request.getParameter("patientID") != null ) 
+        else if(request.getParameter("approve_request") != null) // From nurse/doc dashboard - Approve patient prescription request
+        {
+            dbcon.confirmPrescription(Integer.parseInt(request.getParameter("presID")));
+            
+            request.setAttribute("msg", "<span>Prescription has been approved!</span>");
+            
+            request.getRequestDispatcher("DashboardServlet.do").forward(request, response);
+        }
+        else if(request.getParameter("issue_prescription") != null && request.getParameter("patientID") != null ) // From patients.jsp -> Redirects to issue_prescription.jsp
         {
             List<Patient> patientsList = dbcon.patientsList("all");
             String patientName = "";
@@ -64,7 +72,7 @@ public class PrescriptionServlet extends HttpServlet {
             request.setAttribute("patientName", patientName);
             request.getRequestDispatcher("issue_prescription.jsp").forward(request, response);
         }
-        else if(request.getParameter("add_prescription") != null)
+        else if(request.getParameter("add_prescription") != null) // From issue_prescription.jsp
         {
             // INSERT PRESCRIPTION
             String prescription[] = new String[3];
@@ -84,7 +92,8 @@ public class PrescriptionServlet extends HttpServlet {
             
             request.getRequestDispatcher("issue_prescription.jsp").forward(request, response);
         }
-        else if(request.getParameter("request_prescription") != null){
+        else if(request.getParameter("request_prescription") != null) // From patient dashboard - request prescription
+        {
             
             String prescriptionID = request.getParameter("prescriptionID");
             dbcon.updatePrescription(prescriptionID);

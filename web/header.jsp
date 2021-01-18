@@ -19,7 +19,7 @@
                     <li><a href="records.jsp">Records</a></li>
                     <li><a href="operations.jsp">Operations</a></li>
                     <li><a href="documents.jsp">Documents</a></li>
-                    <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
+                    <li><a href="account.jsp">${user.firstName}</a></li>
                 </ul>
             </c:when>
             <%-- If the role is nurse OR doctor --%>
@@ -28,7 +28,7 @@
                     <li><a href="DashboardServlet.do">Home</a></li>
                     <li><a href="timetable.jsp">Timetable</a></li>
                     <li><a href="PatientsServlet.do">View Patients</a></li> 
-                    <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
+                    <li><a href="account.jsp">${user.firstName}</a></li>
                 </ul>
             </c:when>
             <%-- If the role is patient --%>
@@ -37,7 +37,7 @@
                     <li><a href="DashboardServlet.do">Home</a></li>
                     <li><a href="BookAppointmentServlet.do">Book Appointment</a></li>
                     <li><a href="PrescriptionServlet.do?viewPrescription=true">View Prescriptions</a></li>
-                    <li><a href="account.jsp"><jsp:getProperty name="user" property="username" /></a></li>
+                    <li><a href="account.jsp">${user.firstName}</a></li>
                 </ul>
             </c:otherwise>
         </c:choose>

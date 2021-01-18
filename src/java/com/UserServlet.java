@@ -14,10 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DBConnection;
+import model.User;
 
 /**
  *
- * @author ggra9
+ * @author Raul-Andrei Ginj-Groszhart
  */
 
 public class UserServlet extends HttpServlet {
@@ -63,8 +64,10 @@ public class UserServlet extends HttpServlet {
                 // If the user is found in the database
                 if(dbcon.login(query))
                 {   
-                    // Set a username attribute
+                    // Create user object and set attributes
+                    User user = dbcon.grabUserByName(query[0]);
                     session.setAttribute("username", query[0]);
+                    session.setAttribute("user", user);
                     // Redirect to DashboardServlet
                     response.sendRedirect("DashboardServlet.do");
                 }

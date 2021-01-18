@@ -13,17 +13,28 @@ public class User {
     
     private String username;
     private String role;
+    private String title;
+    private String firstName;
+    private String lastName;
+
+    private int id;
 
     public User(String username, String role) {
         this.username = username;
         this.role = role;
     }
     
+    public User(String username, String role, String title, String firstName, String lastName, int id) {
+        this.id = id;
+        this.username = username;
+        this.role = role;
+        this.title = title;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    
     public String getUsername() {
-        String name = this.username;
-        // capitalize the first letter for aesthetic purposes
-        String capitalUsername = name.substring(0,1).toUpperCase() + name.substring(1);
-        return capitalUsername.trim();
+        return this.username;
     }
     
     public String getRole() {
@@ -32,4 +43,37 @@ public class User {
         String capitalRole = role.substring(0,1).toUpperCase() + role.substring(1);
         return capitalRole.trim();
     }
+    
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+ 
 }

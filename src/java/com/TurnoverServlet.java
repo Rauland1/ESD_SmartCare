@@ -1,12 +1,13 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +21,8 @@ import model.User;
  *
  * @author Grant
  */
-public class DashboardServlet extends HttpServlet {
+@WebServlet(name = "Turnover", urlPatterns = {"/turnover"})
+public class TurnoverServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,18 +34,10 @@ public class DashboardServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
-        
-        response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
-        response.setHeader("Pragma", "no-cache");
-        
-        // Get current session and DON'T create one if it doesn't exist already
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         
-        // Get database connection
-        DBConnection dbcon = (DBConnection) session.getAttribute("dbcon");       
-        
-        dbcon.getTurnoverForDay(new Date(2020 - 1900, 12 - 1, 18));
+        DBConnection dbcon = new DBConnection((Connection)request.getServletContext().getAttribute("connection"));
 
         // Get the username from the session
         String username = (String) session.getAttribute("username");
@@ -57,22 +51,7 @@ public class DashboardServlet extends HttpServlet {
         User user = dbcon.grabUserByName(username);
         session.setAttribute("user", user);
         
-        if(user.getRole().equals("Admin"))
-        {
-            String dashboard_content = dbcon.checkReg();
-            request.setAttribute("regTable", dashboard_content);
-        }
-        else if(user.getRole().equals("Doctor") || user.getRole().equals("Nurse")) 
-        {
-            
-            String dashboard_content = dbcon.checkPrescription(user.getUsername());
-            request.setAttribute("presTable", dashboard_content);
-        }
-        
-        String details = dbcon.checkFields(username, user.getRole());
-        request.setAttribute("details", details);
-        
-        request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("turnover.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -87,11 +66,7 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(DashboardServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -105,11 +80,7 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(DashboardServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -121,4 +92,5 @@ public class DashboardServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

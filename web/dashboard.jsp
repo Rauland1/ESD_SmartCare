@@ -17,7 +17,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
-        <style><%@include file="css/styles.css"%></style>
         <title> SmartCare <jsp:getProperty name="user" property="role"/> Dashboard </title>
     </head>
     <body>
@@ -25,14 +24,14 @@
         <div class="dashboard_view">        
         <main>
             
-            <h2>Welcome, <jsp:getProperty name="user" property="username"/>!</h2>
+            <h2>Welcome, ${user.firstName}!</h2>
             
             <c:choose>
                 <c:when test="${user.role == 'Admin'}">
                     ${requestScope.details}
                     ${requestScope.msg}
                     <h2>Approve registrations</h2>
-                    <form action='ApproveRegistrationServlet.do' method='POST'>
+                    <form action='RegisterServlet.do' method='POST'>
                         <table>
                             <tr>
                                 <th>Username</th>
@@ -48,7 +47,7 @@
                     ${requestScope.details}
                     ${requestScope.msg}
                     <h2>Approve requests for prescription</h2>
-                    <form action='ApprovePrescriptionServlet.do' method='POST'>
+                    <form action='PrescriptionServlet.do' method='POST'>
                         <table>
                             <tr>
                                 <th>Patient Name</th>

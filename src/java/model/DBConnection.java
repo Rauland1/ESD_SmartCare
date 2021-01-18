@@ -194,6 +194,7 @@ public class DBConnection {
         }
         return false;
     }
+    
     // Create new User object
     public User grabUserByName(String username) {
         try {
@@ -207,13 +208,54 @@ public class DBConnection {
             
             String uname = users.getString("uname");
             String role = users.getString("urole");
+            String capitalRole = role.substring(0,1).toUpperCase() + role.substring(1);
+            String[] userDetails = getUserDetails(uname, capitalRole);
             
-            return new User(uname, role);
+            if(userDetails == null)
+                return new User(uname, role);
+            else
+                return new User(uname, role, userDetails[0], userDetails[1], userDetails[2], Integer.parseInt(userDetails[3]));
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
  
         return null;
+    }
+    
+    public String[] getUserDetails(String username, String role) throws SQLException{
+        String sql;
+        String dbn;
+        
+        String[] details = new String[4];
+        
+        if(role.equals("Admin") || role.equals("Doctor") || role.equals("Nurse")){
+            sql = "SELECT * FROM employee WHERE uname=?";
+            dbn = "e";
+        }
+        else {
+            sql = "SELECT * FROM patients WHERE uname=?";
+            dbn = "p";
+        }
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        preparedStatement.setString(1, username);
+
+        ResultSet user = preparedStatement.executeQuery();
+        
+        if(user.next()){
+            
+            details[0] = user.getString(dbn + "Title");
+            details[1] = user.getString(dbn + "First_Name");
+            details[2] = user.getString(dbn + "Last_Name");
+            details[3] = String.valueOf(user.getInt(dbn + "ID"));
+            
+            if(user.wasNull()){
+                return null;
+            }
+        }
+        
+        return details;
     }
     
     public void insertPrescription(String prescription[]){

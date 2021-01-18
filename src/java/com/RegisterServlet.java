@@ -8,6 +8,9 @@ package com;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         
         response.setContentType("text/html;charset=UTF-8");
         
@@ -50,7 +53,23 @@ public class RegisterServlet extends HttpServlet {
         {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
         } 
-        else if(request.getParameter("complete_reg") != null){
+        else if(request.getParameter("approve_reg") != null) // From admin dashboard
+        {
+            
+            String regUsername = request.getParameter("regUsername");
+            
+            if(regUsername == null)
+            {
+                request.setAttribute("msg", "<span>No account has been selected!</span>");
+            } else {
+                dbcon.confirmReg(regUsername);
+                request.setAttribute("msg", "<span>Account registration has been approved!</span>");
+            }
+            
+            request.getRequestDispatcher("DashboardServlet.do").forward(request, response);
+        }
+        else if(request.getParameter("complete_reg") != null) // From complete_registration.jsp
+        {
 
             // Array to hold requested parameters
             String[] details = new String[5];
@@ -64,7 +83,7 @@ public class RegisterServlet extends HttpServlet {
             if(session.getAttribute("user") != null) {
                 User user = (User)session.getAttribute("user");
             
-                dbcon.completeRegistration(details, (String)session.getAttribute("username"),user.getRole());
+                dbcon.completeRegistration(details, user.getUsername(), user.getRole());
                 request.setAttribute("msg", "Registration Complete!");
             } else {
                 response.sendRedirect("conError.jsp");
@@ -73,7 +92,7 @@ public class RegisterServlet extends HttpServlet {
             request.getRequestDispatcher("DashboardServlet.do").forward(request, response);
             
         }
-        else if(request.getParameter("registration_form") != null)
+        else if(request.getParameter("registration_form") != null) // From register.jsp
         {
             
             // Array to hold requested parameters
@@ -122,7 +141,11 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -136,7 +159,11 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

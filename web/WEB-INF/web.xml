@@ -29,14 +29,6 @@
         <servlet-class>com.PrescriptionServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ApproveRegistrationServlet</servlet-name>
-        <servlet-class>com.ApproveRegistrationServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ApprovePrescriptionServlet</servlet-name>
-        <servlet-class>com.ApprovePrescriptionServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>BookAppointmentServlet</servlet-name>
         <servlet-class>com.BookAppointmentServlet</servlet-class>
     </servlet>
@@ -63,14 +55,6 @@
     <servlet-mapping>
         <servlet-name>PrescriptionServlet</servlet-name>
         <url-pattern>/PrescriptionServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ApproveRegistrationServlet</servlet-name>
-        <url-pattern>/ApproveRegistrationServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ApprovePrescriptionServlet</servlet-name>
-        <url-pattern>/ApprovePrescriptionServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BookAppointmentServlet</servlet-name>

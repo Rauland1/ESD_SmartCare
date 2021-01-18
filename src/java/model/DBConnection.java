@@ -13,6 +13,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 //import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -490,10 +491,10 @@ public class DBConnection {
         }
     }
     
-    public float getTurnoverForDay(Date date) {
+    public float getTurnoverForDay(Date day) {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String stringDate = formatter.format(date);
+            String stringDate = formatter.format(day);
             
             String sql = "SELECT * FROM booking_slots WHERE sDate = '" + stringDate + "'";//2020-11-01 - 2020-12-00
             
@@ -533,7 +534,92 @@ public class DBConnection {
                 operations.add(new Operation(id, bookingSlotId, duration, charge));
             }
             
-            return 0;
+            float total = 0;
+            
+            for (Operation operation : operations) {
+                total += operation.charge;
+            }
+            
+            return total;
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return 0;
+    }
+    
+    enum PatientType {
+        All, NHS, Private
+    }
+    
+    public float getTurnoverForRange(Date startDate, Date endDate, PatientType patientType) {
+        try {
+            String extraSql = " AND (SELECT patients.PTYPE FROM patients WHERE patients.PID = booking_slots.PID) = '&s'";
+            
+            switch (patientType) {
+                case Private:
+                    extraSql = String.format(extraSql, "private");
+                    break;
+                case NHS:
+                    extraSql = String.format(extraSql, "NHS");
+                    break;
+            }
+            
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String stringStartDate = formatter.format(startDate);
+            String stringEndDate = formatter.format(endDate);
+            
+            String sql = String.format("SELECT * FROM booking_slots WHERE sDate >= '%s' AND sDate <= '%s'", stringStartDate, stringEndDate);
+            
+            if (patientType != PatientType.All) {
+                sql = sql + extraSql;
+            }
+            
+            PreparedStatement queryStatement = connection.prepareStatement(sql);
+            
+            ResultSet results = queryStatement.executeQuery();
+            
+            List<BookingSlot> bookingSlots = new ArrayList<>();
+            List<String> ids = new ArrayList<>();
+            
+            while (results.next()) {
+                int id = results.getInt(1);
+                int employeeId = results.getInt(2);
+                int patientId = results.getInt(3);
+                Date resultDate = results.getDate(4);
+                java.sql.Time resultTime = results.getTime(5);
+                
+                // Filter out if patient type matches
+                
+                ids.add(String.valueOf(id));
+                bookingSlots.add(new BookingSlot(id, employeeId, patientId, resultDate, resultTime));
+            }
+            
+            String idsCommaSeperated = String.join(",", ids);
+            String secondSql = "SELECT * FROM operations WHERE sID IN (" + idsCommaSeperated + ")"; //7,8,9
+           
+            PreparedStatement state = connection.prepareStatement(secondSql);
+            
+            ResultSet moreResults = state.executeQuery();
+            
+            List<Operation> operations = new ArrayList<>();
+            
+            while (moreResults.next()) {
+                int id = moreResults.getInt(1);
+                int bookingSlotId = moreResults.getInt(2);
+                float duration = moreResults.getFloat(3);
+                float charge = moreResults.getFloat(4);
+                
+                operations.add(new Operation(id, bookingSlotId, duration, charge));
+            }
+            
+            float total = 0;
+            
+            for (Operation operation : operations) {
+                total += operation.charge;
+            }
+            
+            return total;
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }

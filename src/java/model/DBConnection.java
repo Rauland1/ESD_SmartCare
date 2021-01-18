@@ -421,6 +421,24 @@ public class DBConnection {
         
     }
     
+    public String getPatientTypeFromID(int patientId) throws SQLException{
+        
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM patients WHERE PID=?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+        preparedStatement.setInt(1, patientId);
+
+        ResultSet patients = preparedStatement.executeQuery();
+
+        patients.next();
+
+        String patientType = patients.getString("ptype");
+
+        closeAll(preparedStatement, patients);
+        
+        return patientType;
+        
+    }
+    
     public String checkFields (String uname, String urole) throws SQLException {        
         
         String sql = null;

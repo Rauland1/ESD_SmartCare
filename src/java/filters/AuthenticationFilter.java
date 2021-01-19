@@ -48,12 +48,12 @@ public class AuthenticationFilter implements Filter {
         boolean registerServletRequest = httpRequest.getRequestURI().equals(registerServletURI);
         
         boolean isImage = httpRequest.getRequestURI().startsWith(imagesURI);
-        boolean isCSS = httpRequest.getRequestURI().startsWith(cssURI);
+//        boolean isCSS = httpRequest.getRequestURI().startsWith(cssURI);
   
         // If logged in 
         if(loggedIn){
             // If trying to access login OR register links
-            if(loginRequest || loginServletRequest || registerRequest || registerServletRequest || isImage || isCSS){
+            if(loginRequest || loginServletRequest || registerRequest || registerServletRequest || isImage){
                 httpResponse.sendRedirect(httpRequest.getContextPath() + "/DashboardServlet.do"); // Redirect to dashboard
             } else {
                 chain.doFilter(request, response); // Redirect to requested link
@@ -61,7 +61,7 @@ public class AuthenticationFilter implements Filter {
             
         } else { // if NOT logged in
             // and trying to access login/register links
-            if(loginRequest || loginServletRequest || registerRequest || registerServletRequest || isCSS || isImage){
+            if(loginRequest || loginServletRequest || registerRequest || registerServletRequest || isImage){
                 chain.doFilter(request, response); // redirect to requested link
             } else {
                 httpResponse.sendRedirect(loginServletURI); // otherwise, redirect to login

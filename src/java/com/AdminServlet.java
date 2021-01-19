@@ -45,7 +45,24 @@ public class AdminServlet extends HttpServlet {
         {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
         } 
-        
+        else if(request.getParameter("change_price") != null){
+            String surgeryName = request.getParameter("surgery_name");
+            
+            request.setAttribute("changePriceForm", dbcon.generatePriceForm(surgeryName));
+            
+            
+            request.getRequestDispatcher("operations.jsp").forward(request, response);
+        }
+        else if(request.getParameter("submit_price") != null ){
+            String surgeryName = request.getParameter("surgery_name");
+            int newPrice = Integer.parseInt(request.getParameter("new_price"));
+            dbcon.updateSurgeryPrice(newPrice, surgeryName);
+            String msg = "Price has been changed successfully!";
+            request.setAttribute("msg", msg);
+            
+            request.getRequestDispatcher("operations.jsp").forward(request, response);
+           
+        }
         else if(request.getParameter("viewSurgeryPrices").equals("true")){
             String surgeryPrices =  dbcon.viewSurgeryPrices();
             request.setAttribute("surgeryPrices", surgeryPrices);

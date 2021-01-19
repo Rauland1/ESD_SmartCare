@@ -689,7 +689,14 @@ public class DBConnection {
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM surgery_type", PreparedStatement.RETURN_GENERATED_KEYS);
        
         ResultSet rs = preparedStatement.executeQuery();
-        
+        surgeryPricesTable.append("<form name='edit_prices_form' action='AdminServlet.do' method='POST'>" +
+                    "<table>" +
+                    "<tr>" +
+                    "<th>Surgery name</th>" +
+                    "<th>Duration</th>" +
+                    "<th>Prices</th>" +
+                    "<th>Select</th>" +
+                    "</tr>");
         while(rs.next()){
   
             String surgery_name = rs.getString("surgery_name");
@@ -702,8 +709,35 @@ public class DBConnection {
             
             surgeryPricesTable.append(row);
         }
+        surgeryPricesTable.append("<tr><td colspan=4><input type='submit' name='change_price' value='Edit'/></td></tr></table></form>");
         closeAll(preparedStatement, rs);
         return surgeryPricesTable.toString();
     }
     
+    public String generatePriceForm(String surgeryName) throws SQLException{
+        
+        StringBuilder changePriceHTML = new StringBuilder();
+        changePriceHTML.append("<h1>Change Price for " + surgeryName + "</h1>" +
+                "<form name='change_price_form' action='AdminServlet.do' method='POST'>" +
+                "<input type='hidden' name='surgery_name' value='"+surgeryName+"' " +
+                "New price: <br/> <input type='text' name='new_price' required> <br/> " +
+                "<input type='submit' name='submit_price' value='Submit'></form>");
+        
+        return changePriceHTML.toString();
+    } 
+    
+    public void updateSurgeryPrice(int price, String surgeryName) throws SQLException{
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE surgery_type SET charges=? WHERE surgery_name=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            preparedStatement.setInt(1, price);
+            preparedStatement.setString(2,surgeryName);
+            preparedStatement.executeUpdate();
+ 
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }

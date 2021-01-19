@@ -14,15 +14,10 @@
     </head>
     <body>
         <jsp:include page="header.jsp" />
-        <main>
-            <table>
-                <tr>
-                    <th>Surgery name</th>
-                    <th>Duration</th>
-                    <th>Prices</th>
-                </tr>
-                ${requestScope.surgeryPrices}
-            </table>
+        <main> 
+            ${requestScope.msg}
+            ${requestScope.surgeryPrices} 
+            ${requestScope.changePriceForm}
         </main>
         <jsp:include page="footer.jsp" />
 

@@ -17,7 +17,7 @@
                 <ul class="nav_links">
                     <li><a href="DashboardServlet.do">Home</a></li>
                     <li><a href="records.jsp">Records</a></li>
-                    <li><a href="operations.jsp">Operations</a></li>
+                    <li><a href="AdminServlet.do?viewSurgeryPrices=true">Operations</a></li>
                     <li><a href="documents.jsp">Documents</a></li>
                     <li><a href="account.jsp">${user.firstName}</a></li>
                 </ul>

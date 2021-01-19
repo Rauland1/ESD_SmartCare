@@ -41,6 +41,10 @@
         <servlet-name>BookAppointmentServlet</servlet-name>
         <servlet-class>com.BookAppointmentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>com.AdminServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -68,6 +72,10 @@
     <servlet-mapping>
         <servlet-name>BookAppointmentServlet</servlet-name>
         <url-pattern>/BookAppointmentServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/AdminServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -683,4 +683,27 @@ public class DBConnection {
         
         return 0;
     }
+    
+    public String viewSurgeryPrices()throws SQLException{
+        StringBuilder surgeryPricesTable = new StringBuilder();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM surgery_type", PreparedStatement.RETURN_GENERATED_KEYS);
+       
+        ResultSet rs = preparedStatement.executeQuery();
+        
+        while(rs.next()){
+  
+            String surgery_name = rs.getString("surgery_name");
+	    
+	    int duration = rs.getInt("min_duration");
+            
+            float charges = rs.getFloat("charges");
+            
+            String row = "<tr><td>" + surgery_name + "</td><td>" + duration+  "</td><td>" + charges + "</td><td><input type='checkbox' name='surgery_name' value='" + surgery_name + "'></td></tr>";
+            
+            surgeryPricesTable.append(row);
+        }
+        closeAll(preparedStatement, rs);
+        return surgeryPricesTable.toString();
+    }
+    
 }

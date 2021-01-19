@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.sql.Time;
+import java.text.DateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -348,6 +350,38 @@ public class DBConnection {
         }
         closeAll(preparedStatement, rs);
         return prescriptionTable.toString();
+    }
+    
+    public String viewBookings(int employeeId, String selectedDate) throws SQLException{
+        StringBuilder bookingTable = new StringBuilder();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM booking_slots WHERE eID=? AND sDate=?", PreparedStatement.RETURN_GENERATED_KEYS);
+        
+        preparedStatement.setString(1, String.valueOf(employeeId));
+        preparedStatement.setString(2, selectedDate);
+
+        ResultSet rs = preparedStatement.executeQuery();
+        
+        while(rs.next()){
+            //int slot_id = rs.getInt("sID");
+            int patient_id = rs.getInt("pID");
+            
+            String patient_name = getPatientNameFromID(patient_id); 
+            
+            Date date = rs.getDate("sDate");
+            
+            Time time = rs.getTime("sTime");
+            
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
+            String strDate = dateFormat.format(date);  
+            
+            DateFormat timeFormat = new SimpleDateFormat("hh:mm");
+            String strTime = timeFormat.format(time);
+            
+            String row = "<tr><td>" + patient_name + "</td><td>" + strDate + "</td><td>" + strTime + "</td></tr>";
+            bookingTable.append(row);
+        }
+        closeAll(preparedStatement, rs);
+        return bookingTable.toString();
     }
     
     public String checkReg() throws SQLException{

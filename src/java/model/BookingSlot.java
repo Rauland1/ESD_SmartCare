@@ -13,11 +13,11 @@ import java.sql.Date;
  */
 public class BookingSlot {
     
-    int id;
-    int employeeId;
-    int patientId;
-    Date resultDate;
-    java.sql.Time resultTime;                
+    private int id;
+    private int employeeId;
+    private int patientId;
+    private Date resultDate;
+    private java.sql.Time resultTime;                
     
     public BookingSlot(int id, int employeeId, int patientId, Date resultDate, java.sql.Time resultTime) {
         this.id = id;
@@ -26,5 +26,27 @@ public class BookingSlot {
         this.resultDate = resultDate;
         this.resultTime = resultTime;
     }
+    
+    public int getId(){
+        return id;
+    }
+    
+    public int getEmployeeId(){
+        return employeeId;
+    }
+    
+    public int getPatientId(){
+        return patientId;
+    }
+    
+    public Date getDate(){
+        return resultDate;
+    }
+    
+    public java.sql.Time getTime(){
+        return resultTime;
+    }
+    
+    
     
 }

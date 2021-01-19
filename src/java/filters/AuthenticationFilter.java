@@ -19,9 +19,7 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationFilter implements Filter {
     
     public void init(FilterConfig fConfig) throws ServletException {
-        
-        
-        
+
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -37,6 +35,8 @@ public class AuthenticationFilter implements Filter {
         String loginServletURI = httpRequest.getContextPath() + "/UserServlet.do";
         String registerURI = httpRequest.getContextPath() + "/register.jsp";
         String registerServletURI = httpRequest.getContextPath() + "/RegisterServlet.do";
+        String imagesURI = httpRequest.getContextPath() + "/images/";
+        String cssURI = httpRequest.getContextPath() + "/css/";
         
         // Check if the user is already logged in
         boolean loggedIn = (session != null && session.getAttribute("username") != null);
@@ -46,11 +46,14 @@ public class AuthenticationFilter implements Filter {
         boolean loginServletRequest = httpRequest.getRequestURI().equals(loginServletURI);
         boolean registerRequest = httpRequest.getRequestURI().equals(registerURI);
         boolean registerServletRequest = httpRequest.getRequestURI().equals(registerServletURI);
+        
+        boolean isImage = httpRequest.getRequestURI().startsWith(imagesURI);
+        boolean isCSS = httpRequest.getRequestURI().startsWith(cssURI);
   
         // If logged in 
         if(loggedIn){
             // If trying to access login OR register links
-            if(loginRequest || loginServletRequest || registerRequest || registerServletRequest){
+            if(loginRequest || loginServletRequest || registerRequest || registerServletRequest || isImage || isCSS){
                 httpResponse.sendRedirect(httpRequest.getContextPath() + "/DashboardServlet.do"); // Redirect to dashboard
             } else {
                 chain.doFilter(request, response); // Redirect to requested link
@@ -58,7 +61,7 @@ public class AuthenticationFilter implements Filter {
             
         } else { // if NOT logged in
             // and trying to access login/register links
-            if(loginRequest || loginServletRequest || registerRequest || registerServletRequest){
+            if(loginRequest || loginServletRequest || registerRequest || registerServletRequest || isCSS || isImage){
                 chain.doFilter(request, response); // redirect to requested link
             } else {
                 httpResponse.sendRedirect(loginServletURI); // otherwise, redirect to login
@@ -68,9 +71,7 @@ public class AuthenticationFilter implements Filter {
     
 
     public void destroy() {
-        
-        
-        
+
     }
  
 

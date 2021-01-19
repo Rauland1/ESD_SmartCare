@@ -10,12 +10,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
-        <title>SmartCare - <jsp:getProperty name="user" property="username"/> Account</title>
+        <title>SmartCare - ${user.firstName}'s Account</title>
     </head>
     <body>
         <jsp:include page="header.jsp" />
         <main>
-            <h2><jsp:getProperty name="user" property="username"/>'s account page</h2>
+            <h2>${user.firstName}'s account page</h2>
             <!-- SHOW ALL USER DATA + OPTION TO CHANGE PASSWORD -->
             
         </main>

@@ -2,14 +2,8 @@
     Document   : index
     Created on : Nov 27, 2020, 3:56:33 PM
     Author     : Raul-Andrei Ginj-Groszhart & Ashley Gregory
-
-    TODO: - Create session
-          - Check if user is logged
-          - If not logged in stay on this page
-          - If logged in, redirect to dashboard
            
 --%>
-<% if(session.getAttribute("user") != null){response.sendRedirect("DashboardServlet.do");}%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -25,7 +19,7 @@
         <div class="login-box">
             <% if(request.getAttribute("msg") != null){ String message = (String) request.getAttribute("msg"); out.println(message);} %>
             <h1>Login</h1>
-            <!-- Login form that redirects to LoginServlet.doPost() -->
+            <!-- Login form that redirects to UserServlet.do -->
             <form action="UserServlet.do" name="login_form" method="POST">
                 <div class="textbox">
                     <i class="fas fa-user"></i>

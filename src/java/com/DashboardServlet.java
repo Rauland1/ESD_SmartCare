@@ -34,16 +34,16 @@ public class DashboardServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         
-        response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
-        response.setHeader("Pragma", "no-cache");
+//        response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
+//        response.setHeader("Pragma", "no-cache");
         
         // Get current session and DON'T create one if it doesn't exist already
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         
         // Get database connection
         DBConnection dbcon = (DBConnection) session.getAttribute("dbcon");       
         
-        dbcon.getTurnoverForDay(new Date(2020 - 1900, 12 - 1, 18));
+        //dbcon.getTurnoverForDay(new Date(2020 - 1900, 12 - 1, 18));
 
         // Get the username from the session
         String username = (String) session.getAttribute("username");

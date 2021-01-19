@@ -38,7 +38,7 @@ public class PrescriptionServlet extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         
         DBConnection dbcon = (DBConnection) session.getAttribute("dbcon");
         

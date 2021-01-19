@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,10 +36,10 @@ public class UserServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         
+        response.setContentType("text/html;charset=UTF-8");
+        
         // Create session
         HttpSession session = request.getSession();
-        
-        response.setContentType("text/html;charset=UTF-8");
         
         // Create a new connection to the database
         DBConnection dbcon = new DBConnection();
@@ -50,37 +51,49 @@ public class UserServlet extends HttpServlet {
         if(session.getAttribute("dbcon")==null)
         {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
-        } 
-        else
-        {
-            if(request.getParameter("signin") != null)
-            {
-                // Array to hold requested parameters
-                String[] query = new String[2];
-                // Request username and password 
-                query[0] = (String)request.getParameter("username");
-                query[1] = (String)request.getParameter("password");
-                
-                // If the user is found in the database
-                if(dbcon.login(query))
-                {   
-                    // Create user object and set attributes
-                    User user = dbcon.grabUserByName(query[0]);
-                    session.setAttribute("username", query[0]);
-                    session.setAttribute("user", user);
-                    // Redirect to DashboardServlet
-                    response.sendRedirect("DashboardServlet.do");
-                }
-                else
-                {
-                    // Set error message attribute
-                    request.setAttribute("msg", "<span>Make sure your credentials are correct!</span>");
-                    // Redirect to index.jsp
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-
-                }
-            }
         }
+        
+        // Array to hold requested parameters
+        String[] query = new String[2];
+        // Request username and password 
+        query[0] = (String)request.getParameter("username");
+        query[1] = (String)request.getParameter("password");
+        
+        String msg = "";
+            
+        if(request.getParameter("signin") != null)
+        {
+             
+            // If the user is found in the database
+            if(dbcon.login(query))
+            {   
+                // Create user object and set attributes
+                User user = dbcon.grabUserByName(query[0]);
+                session.setAttribute("user", user);
+                session.setAttribute("username", query[0]);
+
+//                // Creating cookie for testing purposes
+//                Cookie userName = new Cookie("username", query[0]);
+//                // Max Age of cookie 30 minutes
+//                userName.setMaxAge(30*60);
+//                // Add cookie to response header
+//                response.addCookie(userName);
+
+                // Redirect to DashboardServlet
+                response.sendRedirect("DashboardServlet.do");
+                return;
+                
+            } else {
+                msg = "<span>Make sure your credentials are correct!</span>";
+            }
+
+        }
+        
+        // Set error message attribute
+        request.setAttribute("msg", msg);
+        // Redirect to index.jsp
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

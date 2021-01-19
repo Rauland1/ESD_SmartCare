@@ -35,7 +35,7 @@ public class TurnoverServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         
         DBConnection dbcon = new DBConnection((Connection)request.getServletContext().getAttribute("connection"));
 

@@ -41,7 +41,7 @@ public class BookAppointmentServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         // Get current session and DON'T create one if it doesn't exist already
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         
         // Get database connection
         DBConnection dbcon = (DBConnection) session.getAttribute("dbcon");     

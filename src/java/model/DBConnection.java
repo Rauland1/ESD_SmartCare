@@ -578,7 +578,7 @@ public class DBConnection {
             details[3] = user.getString(dbn + "Address");
             
             if(user.wasNull()){
-                String message = "Your profile is not complete. Please follow <a href='RegisterServlet.do?completeRegistration=true'>this link</a> to update your details.<br /><br />";
+                String message = "Your profile is not complete. Please follow <a href='CompleteRegistrationServlet.do?completeRegistration=true'>this link</a> to update your details.<br /><br />";
                 return message;
             } else {      
                 return "";
@@ -594,10 +594,10 @@ public class DBConnection {
             String sql = null;
             
             if(urole.equals("Admin") || urole.equals("Doctor") || urole.equals("Nurse")) {
-                sql = "UPDATE employee SET eTitle=?, eFirst_Name=?, eLast_Name=?, eAddress=? WHERE uname=?";
+                sql = "UPDATE employee SET eTitle=?, eFirst_Name=?, eLast_Name=?, eAddress=? , eDOB=? WHERE uname=?";
             }
             else {
-                sql = "UPDATE patients SET pTitle=?, pFirst_Name=?,pLast_Name=?, pAddress=? WHERE uname=?";
+                sql = "UPDATE patients SET pTitle=?, pFirst_Name=?,pLast_Name=?, pAddress=?, pDOB=? WHERE uname=?";
             }
             
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -606,13 +606,17 @@ public class DBConnection {
             preparedStatement.setString(2, details[1]);
             preparedStatement.setString(3, details[2]);
             
+            
+            
             PlaceAPI placeapi = new PlaceAPI(details[4]);
             
             String full_address = details[3] + " " + placeapi.getAddressXML();
             
             preparedStatement.setString(4, full_address);
             
-            preparedStatement.setString(5, username);
+            preparedStatement.setString(5, details[5]);
+            
+            preparedStatement.setString(6, username);
             
             preparedStatement.executeUpdate();
  

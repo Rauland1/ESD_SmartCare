@@ -47,14 +47,14 @@ public class DashboardServlet extends HttpServlet {
 
         // Get the username from the session
         String username = (String) session.getAttribute("username");
+        User user = (User) session.getAttribute("user");
 
-        if (username == null) {
+        if (user == null || username == null) {
+            session.removeAttribute("user");
             session.removeAttribute("username");
             response.sendRedirect("index.jsp");
             return;
         }
-        
-        User user = (User) session.getAttribute("user");
         
         if(user.getRole().equals("Admin"))
         {

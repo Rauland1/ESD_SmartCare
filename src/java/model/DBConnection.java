@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -132,8 +135,9 @@ public class DBConnection {
             String lName = rs.getString("pLast_name");
             String addr = rs.getString("pAddress");
             String type = rs.getString("pType");
+            String referred = rs.getString("pReferred");
             
-            Patient patient = new Patient(id, title, fName, lName, addr, type);
+            Patient patient = new Patient(id, title, fName, lName, addr, type, referred);
             patientList.add(patient);
         }
         rs.close();
@@ -271,6 +275,21 @@ public class DBConnection {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void insertReferral(String patientId){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE patients SET pReferred = ? WHERE pID = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            preparedStatement.setString(1, "Referred");
+            preparedStatement.setString(2, patientId);
+            
+            
+            preparedStatement.executeUpdate();
+ 
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     public String getEmplyeeIDFromUsername(String username) throws SQLException{
         
@@ -385,10 +404,13 @@ public class DBConnection {
     
     public String viewAppointments(int patientId) throws SQLException{
         StringBuilder appointmentTable = new StringBuilder();
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM booking_slots WHERE pID=?", PreparedStatement.RETURN_GENERATED_KEYS);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM booking_slots WHERE pID=? AND sDate >=? ", PreparedStatement.RETURN_GENERATED_KEYS);
         
         preparedStatement.setString(1, String.valueOf(patientId));
-       
+        preparedStatement.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
 
         ResultSet rs = preparedStatement.executeQuery();
         
@@ -416,12 +438,11 @@ public class DBConnection {
     }
     public void deleteAppointment(int appointmentId) throws SQLException{
         PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM booking_slots WHERE sID =?", PreparedStatement.RETURN_GENERATED_KEYS);
+        
         preparedStatement.setString(1, String.valueOf(appointmentId));
         //ResultSet rs = 
         preparedStatement.executeUpdate();
         
-        
-
     }
     
     public String checkReg() throws SQLException{

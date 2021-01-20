@@ -50,10 +50,6 @@
         <servlet-class>com.BookingsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ViewAppointmentsServlet</servlet-name>
-        <servlet-class>com.ViewAppointmentsServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ViewAppointmentServlet</servlet-name>
         <servlet-class>com.ViewAppointmentServlet</servlet-class>
     </servlet>
@@ -96,10 +92,6 @@
     <servlet-mapping>
         <servlet-name>ViewAppointmentServlet</servlet-name>
         <url-pattern>/ViewAppointmentServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ViewAppointmentServlet</servlet-name>
-        <url-pattern>/ViewAppointmentServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

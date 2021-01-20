@@ -22,7 +22,7 @@
     <jsp:include page="header.jsp" />
     <main>
     <h2><jsp:getProperty name="user" property="role"/> <jsp:getProperty name="user" property="username"/>'s Appointments</h2>
-    <form action="ViewAppointmentsServlet.do" method="POST">
+    <form action="ViewAppointmentServlet.do" method="POST">
         <table>
             <tr>
                 <th>Staff</th>

@@ -178,23 +178,17 @@ public class DBConnection {
         return availableStaff.toString();        
     }
     
-    public boolean ifBookingExists(String details[]) {
+    public boolean ifBookingExists(String details[]) throws SQLException {
         
-        try {
-            StringBuilder availableStaff = new StringBuilder();
-            String sql = "SELECT * FROM BOOKING_SLOTS WHERE EXISTS (EID = "+details[0]+")";
-            
-            statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
-            if (rs != null){
-                return false;
-            }
-          
-        } catch (SQLException ex) {
-            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-        return true;
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM booking_slots WHERE eID=? AND sDate=? AND sTime=?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+        preparedStatement.setString(1, details[0]);
+        preparedStatement.setString(2, details[2]);
+        preparedStatement.setString(3, details[3]);
+
+        ResultSet bookings = preparedStatement.executeQuery();
+
+        return bookings.next();
     }
     
     public boolean ifBookingExists(String details[]) {

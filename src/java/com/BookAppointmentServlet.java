@@ -77,6 +77,7 @@ public class BookAppointmentServlet extends HttpServlet {
             // Set proceed to booking confirmation message.
             String pr_msg = "Now select a practitioner confirm your booking.";
             request.setAttribute("pr_msg", pr_msg);
+            request.getRequestDispatcher("booking.jsp").forward(request, response);
         }
         else if (selectedDate == null){
             request.setAttribute("pr_msg", "Please select a date!!");
@@ -109,13 +110,14 @@ public class BookAppointmentServlet extends HttpServlet {
             details[3] = (String)request.getParameter("hiddenTime");          
             
             // Show booking confirmation if successful
-            if (dbcon.ifBookingExists(details) == false){
-                //dbcon.insertBooking(details);
+            if (!dbcon.ifBookingExists(details)){
+                dbcon.insertBooking(details);
                 request.setAttribute("msg", "Booking Complete!");
                 request.getRequestDispatcher("confirm_booking.jsp").forward(request, response);
             }     
             else{
                 request.setAttribute("pr_msg", "Booking Not Available!\nSelect a different appointment!");
+                request.getRequestDispatcher("booking.jsp").forward(request, response);
             }
         }
       

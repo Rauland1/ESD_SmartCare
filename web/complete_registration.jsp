@@ -18,7 +18,7 @@
         <main>
             <h2>Please complete the following fields</h2> 
 
-            <form action="RegisterServlet.do" method="POST">
+            <form action="CompleteRegistrationServlet.do" method="POST">
                 Title: <br />
                 <select name="title" required>
                     <option value="title" disabled selected>Title</option>
@@ -35,6 +35,8 @@
                 <input type ="text" placeholder="House number" name="house_no" required>  <br />
                 Post Code: <br />
                 <input type ="text" placeholder="Post Code" name="post_code" required>  <br /><br />
+                Date of birth: <br />
+                <input type ="date" placeholder="Date of birth" name="DOB" required>  <br /><br />
                 <input name="complete_reg" type="submit" value="Submit">
             </form>
         </main>

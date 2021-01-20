@@ -50,11 +50,7 @@ public class BookingsServlet extends HttpServlet {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
             
         } 
-//        else if(request.getParameter("app_date") == null){
-//             
-//            request.getRequestDispatcher("view_all_bookings.jsp").forward(request, response);
-//
-//        }
+
         else if(request.getParameter("view_bookings") != null && request.getParameter("app_date") != null)
         {
             String selectedDate = request.getParameter("app_date");
@@ -66,17 +62,7 @@ public class BookingsServlet extends HttpServlet {
             
         }
     }
-        //else if(request.getParameter("date_submit") != null)
-        //{
-            //String date = request.getParameter("date");
-            //List<Patient> patientsList = dbcon.patientsList(date);
-            //session.setAttribute("patientsList", patientsList);
-            //request.getRequestDispatcher("view_all_bookings.jsp").forward(request, response);
-        //}
-        //else if(request.getParameter("view_bookings").equals("true"))
-        //{
-          //  request.getRequestDispatcher("view_all_bookings.jsp").forward(request, response);
-        //}
+      
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

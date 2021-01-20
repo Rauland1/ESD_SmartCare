@@ -37,6 +37,7 @@
                     <li><a href="DashboardServlet.do">Home</a></li>
                     <li><a href="BookAppointmentServlet.do">Book Appointment</a></li>
                     <li><a href="PrescriptionServlet.do?viewPrescription=true">View Prescriptions</a></li>
+                    <li><a href="ViewAppointmentsServlet.do?view_appointments=true">Appointments</a></li>
                     <li><a href="account.jsp">${user.firstName}</a></li>
                 </ul>
             </c:otherwise>

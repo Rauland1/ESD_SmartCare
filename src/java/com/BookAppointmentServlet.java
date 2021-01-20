@@ -56,7 +56,7 @@ public class BookAppointmentServlet extends HttpServlet {
             request.setAttribute("time", "Not Selected");
         }
                
-        if(request.getParameter("select_appointment") != null && selectedDate != null && selectedTime != null) {
+        if(request.getParameter("select_appointment") != null && selectedDate != null) {
             
             // Format date
             SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -75,9 +75,12 @@ public class BookAppointmentServlet extends HttpServlet {
             request.setAttribute("time", selectedTime);
             
             // Set proceed to booking confirmation message.
-            String pr_msg = "Now confirm your booking.";
+            String pr_msg = "Now select a practitioner confirm your booking.";
             request.setAttribute("pr_msg", pr_msg);
         }
+        else if (selectedDate == null){
+            request.setAttribute("pr_msg", "Please select a date!!");
+        }      
         
         // After selecting date & time show available staff and overview of booking details
         if (request.getParameter("staff") != null){
@@ -106,13 +109,18 @@ public class BookAppointmentServlet extends HttpServlet {
             details[3] = (String)request.getParameter("hiddenTime");          
             
             // Show booking confirmation if successful
-            if (dbcon.insertBooking(details)){
+            if (dbcon.ifBookingExists(details) == false){
+                //dbcon.insertBooking(details);
                 request.setAttribute("msg", "Booking Complete!");
                 request.getRequestDispatcher("confirm_booking.jsp").forward(request, response);
+            }     
+            else{
+                request.setAttribute("pr_msg", "Booking Not Available!\nSelect a different appointment!");
             }
         }
-        
+      
         request.getRequestDispatcher("booking.jsp").forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

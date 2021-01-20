@@ -50,6 +50,10 @@
         <servlet-class>com.BookingsServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CompleteRegistrationServlet</servlet-name>
+        <servlet-class>com.CompleteRegistrationServlet</servlet-class>
+   </servlet>
+    <servlet>
         <servlet-name>ViewAppointmentServlet</servlet-name>
         <servlet-class>com.ViewAppointmentServlet</servlet-class>
     </servlet>
@@ -88,6 +92,10 @@
     <servlet-mapping>
         <servlet-name>BookingsServlet</servlet-name>
         <url-pattern>/BookingsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompleteRegistrationServlet</servlet-name>
+        <url-pattern>/CompleteRegistrationServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewAppointmentServlet</servlet-name>

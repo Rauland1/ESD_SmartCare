@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/styles.css" type="text/css">
+        <style><%@include file="css/styles.css"%></style>
         <title>SmartCare - Book Appointment</title>
     </head>
     <body>
@@ -22,7 +22,7 @@
             <h3>Please select a date & time:</h3>
             <form action="BookAppointmentServlet.do" method="POST">   
                 <div id="select_date">
-                    <input type="date" name="date" placeholder="Click to View Calendar"> <br/><br/>
+                    <input type="date" name="date" placeholder="Click to View Calendar" required> <br/><br/>
                 </div>
                 <div id="select_time">
                     <select name="time">
@@ -47,8 +47,8 @@
                     </select> <br/><br/>
                 </div>
                 <input type="submit" name="select_appointment" value="Select Appointment">
-
             </form>
+            <br>
             ${requestScope.pr_msg}
         </div>
         

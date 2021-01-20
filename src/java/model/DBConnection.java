@@ -362,7 +362,6 @@ public class DBConnection {
         ResultSet rs = preparedStatement.executeQuery();
         
         while(rs.next()){
-            //int slot_id = rs.getInt("sID");
             int patient_id = rs.getInt("pID");
             
             String patient_name = getPatientNameFromID(patient_id); 
@@ -382,6 +381,47 @@ public class DBConnection {
         }
         closeAll(preparedStatement, rs);
         return bookingTable.toString();
+    }
+    
+    public String viewAppointments(int patientId) throws SQLException{
+        StringBuilder appointmentTable = new StringBuilder();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM booking_slots WHERE pID=?", PreparedStatement.RETURN_GENERATED_KEYS);
+        
+        preparedStatement.setString(1, String.valueOf(patientId));
+       
+
+        ResultSet rs = preparedStatement.executeQuery();
+        
+        while(rs.next()){
+            int appointment_id = rs.getInt("sID");
+            int employee_id = rs.getInt("eID");
+            
+            String employee_name = getEmployeeName(employee_id); 
+            
+            Date date = rs.getDate("sDate");
+            
+            Time time = rs.getTime("sTime");
+            
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
+            String strDate = dateFormat.format(date);  
+            
+            DateFormat timeFormat = new SimpleDateFormat("hh:mm");
+            String strTime = timeFormat.format(time);
+            
+            String row = "<tr><td>" + employee_name + "</td><td>" + strDate + "</td><td>" + strTime + "</td><td><input type='checkbox' name='appointmentID' value='" + appointment_id + "'></td></tr>";
+            appointmentTable.append(row);
+        }
+        closeAll(preparedStatement, rs);
+        return appointmentTable.toString();
+    }
+    public void deleteAppointment(int appointmentId) throws SQLException{
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM booking_slots WHERE sID =?", PreparedStatement.RETURN_GENERATED_KEYS);
+        preparedStatement.setString(1, String.valueOf(appointmentId));
+        //ResultSet rs = 
+        preparedStatement.executeUpdate();
+        
+        
+
     }
     
     public String checkReg() throws SQLException{

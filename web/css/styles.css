@@ -156,7 +156,7 @@ textarea {
 .book_appointment{
     position: absolute;
     top: 50%;
-    left: 39%;
+    left: 35%;
     transform: translate(-50%,-50%);
     color: black;
     background: whitesmoke;
@@ -181,7 +181,7 @@ textarea {
 .appointment_details{
     position: absolute;
     top: 50%;
-    right: 16%;
+    right: 12%;
     transform: translate(-50%,-50%);
     color: black;
     background: whitesmoke;

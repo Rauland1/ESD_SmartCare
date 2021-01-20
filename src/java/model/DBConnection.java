@@ -174,6 +174,25 @@ public class DBConnection {
         return availableStaff.toString();        
     }
     
+    public boolean ifBookingExists(String details[]) {
+        
+        try {
+            StringBuilder availableStaff = new StringBuilder();
+            String sql = "SELECT * FROM BOOKING_SLOTS WHERE EXISTS (EID = "+details[0]+")";
+            
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sql);
+            if (rs != null){
+                return false;
+            }
+          
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
+    
     public boolean insertBooking(String details[]) throws ParseException{
 
         //Date sqlDate = Date.valueOf(details[2]);

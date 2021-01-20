@@ -1,5 +1,5 @@
 <%-- 
-    Document   : timetable
+    Document   : appointments
     Created on : 14-Dec-2020, 9:18:02
     Author     : Ash
 --%>
@@ -20,22 +20,23 @@
         if (session.getAttribute("user") != null) {
     %>
     <jsp:include page="header.jsp" />
-
+    <main>
     <h2><jsp:getProperty name="user" property="role"/> <jsp:getProperty name="user" property="username"/>'s Appointments</h2>
-    <form action="BookingsServlet.do" method="POST">
-        <label for="bookings">Please select a date:</label>
-        <input type="date" id="bookings" name="app_date" min="2000-01-01" max="2100-12-31" required>          
-        <td colspan="3"><input type="submit" name="view_bookings" value="View"></td>
+    <form action="ViewAppointmentsServlet.do" method="POST">
         <table>
             <tr>
-                <th>Patient</th>
+                <th>Staff</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>Select</th>
             </tr>
-            ${requestScope.bRow}
+            ${requestScope.aRow}
+            <tr>
+                <td colspan="3"><input type="submit" name="cancel_appointment" value="cancel"></td>
+            </tr>
         </table>
     </form>
-
+    </main>
 
     <jsp:include page="footer.jsp" />
     <% } else {

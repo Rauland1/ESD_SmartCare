@@ -1,0 +1,36 @@
+<%-- 
+    Document   : records.jsp
+    Created on : Jan 20, 2021, 2:16:16 AM
+    Author     : Raul-Andrei Ginj-Groszhart
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/styles.css" type="text/css">
+        <title>SmartCare - Delete Appointments</title>
+    </head>
+    <body>
+        <jsp:include page="header.jsp" />
+
+        <h2>Appointments</h2>
+        <form action="AdminServlet.do" method="POST">
+            <td colspan="3"><input type="submit" name="view_bookings" value="View"></td>
+            <table>
+                <tr>
+                    <th>Doctor</th>
+                    <th>Patient</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+                ${requestScope.bRow}
+            </table>
+        </form>
+
+
+        <jsp:include page="footer.jsp" />
+    
+    </body>
+</html>

@@ -44,7 +44,7 @@ public class AdminServlet extends HttpServlet {
         if(session.getAttribute("dbcon")==null)
         {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
-        } 
+        }
         else if(request.getParameter("change_price") != null){
             String surgeryName = request.getParameter("surgery_name");
             
@@ -69,7 +69,14 @@ public class AdminServlet extends HttpServlet {
 
             request.getRequestDispatcher("operations.jsp").forward(request, response);
                     
+        }        else if(request.getParameter("viewAppointments").equals("true")){
+            
+            // Create dropdown list to view employees that have appointments for a given day
+            
+            
+            request.getRequestDispatcher("records.jsp").forward(request, response);
         }
+
             
     }
 

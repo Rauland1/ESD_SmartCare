@@ -7,6 +7,7 @@ package com;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,74 +47,71 @@ public class BookAppointmentServlet extends HttpServlet {
         // Get database connection
         DBConnection dbcon = (DBConnection) session.getAttribute("dbcon");     
         
-        // Grab Appointment details to show on screen
-        int PID = dbcon.grabPatientId((String) session.getAttribute("username"));  
-        request.setAttribute("pID", PID);
-        String date = request.getParameter("date");
-        String time = request.getParameter("time");
-        request.setAttribute("date", date); 
-         
-        if(request.getParameter("date") != null && request.getParameter("time") != null){  
-            session.setAttribute("date", date);
-            session.setAttribute("time", time);    
-                         
-            // Get list of available staff for selected day
-            Date date1 = new SimpleDateFormat("MM/dd/yyyy").parse(date);
-            int digit = date1.getDay();
-            String day = "";
-            switch (digit) {
-                case 1:
-                  day = "Mo";
-                  break;
-                case 2:
-                  day = "Tu";
-                  break;
-                case 3:
-                  day = "We";
-                  break;
-                case 4:
-                  day = "Th";
-                  break;
-                case 5:
-                  day = "Fr";
-                  break;
-                case 6:
-                  day = "Sa";
-                  break;
-                case 0:
-                  day = "Su";
-                  break;
-            } 
-            //float timeValue = Float.parseFloat(time.replace(":",""));
-            String employees = dbcon.staffList(day, time);
-            request.setAttribute("staff", employees);
+        // Grab selected date and time
+        String selectedDate = request.getParameter("date");
+        String selectedTime = request.getParameter("time");
+        
+        if(selectedDate == null && selectedTime == null) {
+            request.setAttribute("date", "Not Selected");
+            request.setAttribute("time", "Not Selected");
+        }
+               
+        if(request.getParameter("select_appointment") != null && selectedDate != null && selectedTime != null) {
+            
+            // Format date
+            SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = oldDateFormat.parse(selectedDate);
+            // Get the day from the full date
+            String day = new SimpleDateFormat("EEE").format(date);
+            day = day.substring(0,2);
+            System.out.println(day);
+            
+            // Get list of available staff for selected date/time
+            String employees = dbcon.staffList(day, selectedTime);
+            request.setAttribute("staffList", employees);
+            
+            oldDateFormat.applyPattern("dd/MM/yyyy");
+            request.setAttribute("date", oldDateFormat.format(date));
+            request.setAttribute("time", selectedTime);
             
             // Set proceed to booking confirmation message.
             String pr_msg = "Now confirm your booking.";
             request.setAttribute("pr_msg", pr_msg);
         }
+        
         // After selecting date & time show available staff and overview of booking details
-        if (request.getParameter("staff")!= null){
+        if (request.getParameter("staff") != null){
+            // Get name of doctor
             String name = request.getParameter("staff");
             String[] staffName = name.split(" ");
-            String pid = Integer.toString(PID);
+            String pid = String.valueOf(request.getParameter("patientID"));
             String EID = staffName[0];
-            request.setAttribute("staffName", name);           
-
+                  
+            
+            // Format date one more time
+            Date oldFormat = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("hiddenDate"));
+            DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = newFormat.format(oldFormat);
+            
+            request.setAttribute("staffName", name.substring(1)); 
+            request.setAttribute("finalDate", request.getParameter("hiddenDate"));
+            request.setAttribute("finalTime", request.getParameter("hiddenTime"));
+            
             // Array to hold requested parameters
             String[] details = new String[4];
             // Request username and password 
             details[0] = (String)EID;
             details[1] = (String)pid;
-            details[2] = (String)session.getAttribute("date");
-            details[3] = (String)session.getAttribute("time");           
+            details[2] = (String)date;
+            details[3] = (String)request.getParameter("hiddenTime");          
             
             // Show booking confirmation if successful
             if (dbcon.insertBooking(details)){
                 request.setAttribute("msg", "Booking Complete!");
                 request.getRequestDispatcher("confirm_booking.jsp").forward(request, response);
-            }          
+            }
         }
+        
         request.getRequestDispatcher("booking.jsp").forward(request, response);
     }
 

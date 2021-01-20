@@ -9,15 +9,15 @@
 
 <!DOCTYPE html>
 <header class="header_bar">
-    <h1 class="header_title">SmartCare - <jsp:getProperty name="user" property="role" /> Dashboard</h1>
+    <h1 class="header_title">SmartCare - ${user.role} Dashboard</h1>
     <nav>
         <c:choose>
             <%-- If the role is admin --%>
             <c:when test="${user.role == 'Admin'}">
                 <ul class="nav_links">
                     <li><a href="DashboardServlet.do">Home</a></li>
-                    <li><a href="records.jsp">Records</a></li>
-                    <li><a href="AdminServlet.do?viewSurgeryPrices=true">Operations</a></li>
+                    <li><a href="AdminServlet.do?viewAppointments=true">Delete Appointments</a></li>
+                    <li><a href="AdminServlet.do?viewSurgeryPrices=true">Surgery Prices</a></li>
                     <li><a href="documents.jsp">Documents</a></li>
                     <li><a href="account.jsp">${user.firstName}</a></li>
                 </ul>

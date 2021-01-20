@@ -17,10 +17,10 @@
         <jsp:include page="header.jsp" />
         <div class="confirm_booking">
         <h1>Booking confirmed!</h1>
-        <h3>Practitioner: <%=request.getAttribute("staffName")%></h3
-        <h3>Patient: <%=session.getAttribute("username")%></h3>
-        <h3>Appointment Date: <%=session.getAttribute("date")%></h3>
-        <h3>Appointment Time: <%=session.getAttribute("time")%></h3>
+        <h3>Practitioner: ${requestScope.staffName}</h3
+        <h3>Patient: ${user.title} ${user.firstName} ${user.lastName}</h3>
+        <h3>Appointment Date: ${requestScope.finalDate}</h3>
+        <h3>Appointment Time: ${requestScope.finalTime}</h3>
         <form action="DashboardServlet.do"><input type="submit" value="Return to Dashboard"></form>
         </div>        
         <jsp:include page="footer.jsp" />

@@ -16,14 +16,16 @@ public class Patient {
     private String name;
     private String type;
     private String address;
+    private String referred;
        
     // Constructor to be used with the new DB format
-    public Patient(int id, String title, String fName, String lName, String address, String type){
+    public Patient(int id, String title, String fName, String lName, String address, String type, String referred){
         this.id = id;
         this.title = title;
         this.name = fName + ' ' + lName;
         this.address = address;
         this.type = type;
+        this.referred = referred;
     }
     
     public int getId() {
@@ -44,5 +46,8 @@ public class Patient {
     
     public String getAddress() {
         return address;
+    }
+    public String getReferred(){
+        return referred;
     }
 }

@@ -72,6 +72,24 @@ public class PrescriptionServlet extends HttpServlet {
             request.setAttribute("patientName", patientName);
             request.getRequestDispatcher("issue_prescription.jsp").forward(request, response);
         }
+        else if(request.getParameter("refer_patient") != null && request.getParameter("patientID") != null ) // From patients.jsp -> Redirects to issue_prescription.jsp
+        {
+            List<Patient> patientsList = dbcon.patientsList("all");
+            String patientName = "";
+            
+            for(Patient patient : patientsList)
+            {
+                if(patient.getId() == Integer.parseInt(request.getParameter("patientID")))
+                {
+                    String patientTitle = patient.getTitle();
+                    patientName = patientTitle + ' ' + patient.getName();
+                    break;
+                }
+            }
+            
+            request.setAttribute("patientName", patientName);
+            request.getRequestDispatcher("refer_patient.jsp").forward(request, response);
+        }
         else if(request.getParameter("add_prescription") != null) // From issue_prescription.jsp
         {
             // INSERT PRESCRIPTION
@@ -91,6 +109,19 @@ public class PrescriptionServlet extends HttpServlet {
             request.setAttribute("msg", msg);
             
             request.getRequestDispatcher("issue_prescription.jsp").forward(request, response);
+        }
+        else if(request.getParameter("add_referral") != null) // From issue_referral.jsp
+        {
+            
+            String patientId = (String) request.getParameter("pID");
+            
+            
+            dbcon.insertReferral(patientId);
+            
+            String msg = "<h1>Patient has been referred!</h1>";
+            request.setAttribute("msg", msg);
+            
+            request.getRequestDispatcher("refer_patient.jsp").forward(request, response);
         }
         else if(request.getParameter("request_prescription") != null) // From patient dashboard - request prescription
         {

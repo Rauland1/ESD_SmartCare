@@ -34,7 +34,8 @@
                                 <th>Patient Type</th>
                                 <th>Patient Name</th>
                                 <th>Patient Address</th>
-                                <th>Select Patient</th>
+                                <th>Select Patient</th>  
+                                <th>Referred</th>
                             </tr>
                             <c:forEach items="${patientsList}" var="patient">
                                 <tr>
@@ -42,10 +43,12 @@
                                     <td>${patient.title} ${patient.name}</td>
                                     <td>${patient.address}</td>
                                     <td><input type="checkbox" name="patientID" value="${patient.id}"></td>
+                                    <td>${patient.referred}</td>
                                 </tr>
                             </c:forEach>
                             <tr>
                                 <td colspan="4"><input type="submit" name="issue_prescription" value="Issue New Prescription"></td>
+                                <td colspan="4"><input type="submit" name="refer_patient" value="Refer To Specialist"></td>
                             </tr>
                         </table>
                     </form>

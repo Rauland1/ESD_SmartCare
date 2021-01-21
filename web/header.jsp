@@ -28,6 +28,7 @@
                     <li><a href="DashboardServlet.do">Home</a></li>
                     <li><a href="timetable.jsp">Timetable</a></li>
                     <li><a href="PatientsServlet.do">View Patients</a></li> 
+                    <li><a href="AddPatientServlet.do">Add Patient</a></li> 
                     <li><a href="account.jsp">${user.firstName}</a></li>
                 </ul>
             </c:when>

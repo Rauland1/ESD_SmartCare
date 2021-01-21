@@ -190,6 +190,18 @@ textarea {
     border: 5px solid black;
 }
 
+.add_patient{
+    position: absolute;
+    top: 50%;
+    right: 33%;
+    transform: translate(-50%,-50%);
+    color: black;
+    background: whitesmoke;
+    padding: 0em 1em 1em 1em;
+    border-radius: 10px;
+    border: 5px solid black;
+}
+
 /*.dashboard_view{
     position: absolute;
     top: 50%;

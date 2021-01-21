@@ -193,7 +193,6 @@ public class DBConnection {
     
     public boolean insertBooking(String details[]) throws ParseException{
 
-        //Date sqlDate = Date.valueOf(details[2]);
         try {
             try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO BOOKING_SLOTS (EID, PID, SDATE, STIME) VALUES (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setString(1, details[0]);
@@ -209,7 +208,26 @@ public class DBConnection {
         return false;
     }
     
-    // Create new User object
+    public boolean insertPatient(String details[]){
+        
+        try {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO patients (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED) VALUES (?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setString(1, details[0]);
+                preparedStatement.setString(2, details[1]);
+                preparedStatement.setString(3, details[2]);
+                preparedStatement.setString(4, details[3]);
+                preparedStatement.setString(5, details[4]);
+                preparedStatement.setString(6, details[5]);
+                preparedStatement.setString(7, details[6]);
+                preparedStatement.executeUpdate();
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+      // Create new User object
     public User grabUserByName(String username) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE UNAME=?", PreparedStatement.RETURN_GENERATED_KEYS);

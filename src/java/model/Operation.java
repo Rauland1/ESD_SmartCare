@@ -12,15 +12,20 @@ import java.sql.Date;
  * @author Grant
  */
 public class Operation {
+    
     int id;
     int bookingSlotId;
-    float duration;
-    float charge;               
+    int employeeId;
+    int patientId;  
+    String surgery_name;
+    int operation_duration;
     
-    public Operation(int id, int bookingSlotId, float duration, float charge) {
+    public Operation(int id, int bookingSlotId, int employeeId, int patientId, String surgery_name,int operation_duration) {
         this.id = id;
         this.bookingSlotId = bookingSlotId;
-        this.duration = duration;
-        this.charge = charge;
+        this.employeeId = employeeId;
+        this.patientId = patientId;
+        this.surgery_name = surgery_name;
+        this.operation_duration = operation_duration;
     }
 }

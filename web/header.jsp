@@ -20,6 +20,7 @@
                     <li><a href="operations.jsp">Operations</a></li>
                     <li><a href="documents.jsp">Documents</a></li>
                     <li><a href="account.jsp">${user.firstName}</a></li>
+                    <li><a href="turnover.jsp">turnover</a></li>
                 </ul>
             </c:when>
             <%-- If the role is nurse OR doctor --%>

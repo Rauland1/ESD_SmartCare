@@ -553,9 +553,9 @@ public class DBConnection {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String stringDate = formatter.format(day);
             
-            String sql = "SELECT * FROM booking_slots WHERE sDate = '" + stringDate + "'";//2020-11-01 - 2020-12-00
+            String todays_booking_slots = "SELECT * FROM booking_slots WHERE sDate = '" + stringDate + "'";//2020-11-01 - 2020-12-00
             
-            PreparedStatement queryStatement = connection.prepareStatement(sql);
+            PreparedStatement queryStatement = connection.prepareStatement(todays_booking_slots);
             
             ResultSet results = queryStatement.executeQuery();
             
@@ -574,27 +574,46 @@ public class DBConnection {
             }
             
             String idsCommaSeperated = String.join(",", ids);
-            String secondSql = "SELECT * FROM operations WHERE sID IN (" + idsCommaSeperated + ")"; //7,8,9
-           
-            PreparedStatement state = connection.prepareStatement(secondSql);
             
-            ResultSet moreResults = state.executeQuery();
+            String todaysOperations = "SELECT * FROM operations WHERE sID IN (" + idsCommaSeperated + ")"; //7,8,9
+           
+            PreparedStatement operations_sql = connection.prepareStatement(todaysOperations);           
+            ResultSet moreResults = operations_sql.executeQuery();
             
             List<Operation> operations = new ArrayList<>();
+            List<String> surgeryNames = new ArrayList<>();
             
             while (moreResults.next()) {
                 int id = moreResults.getInt(1);
                 int bookingSlotId = moreResults.getInt(2);
-                float duration = moreResults.getFloat(3);
-                float charge = moreResults.getFloat(4);
-                
-                operations.add(new Operation(id, bookingSlotId, duration, charge));
+                int employeeId = moreResults.getInt(3);
+                int patientId = moreResults.getInt(4);
+                String surgery_name = moreResults.getString(5);
+                int operation_duration = moreResults.getInt(6);
+                         
+                surgeryNames.add(surgery_name);
+                operations.add(new Operation(id, bookingSlotId, employeeId, patientId,surgery_name, operation_duration));
             }
             
+            String surgeryTypesCommaSeperated = String.join(",", surgeryNames);
+            
+            String todaysSurgerys = "SELECT * FROM surgery_type WHERE SURGERY_NAME IN (" + surgeryTypesCommaSeperated + ")";
+            
+            PreparedStatement surgery_name_sql = connection.prepareStatement(todaysSurgerys);
+            ResultSet evenMoreResults = surgery_name_sql.executeQuery();
+            
+            List<SurgeryType> surgeryType = new ArrayList<>();
+            
+            while (evenMoreResults.next()) {
+                String surgeryName = evenMoreResults.getString(1);
+                int minDuration = evenMoreResults.getInt(2);
+                float charges = evenMoreResults.getFloat(3);                
+            }
+                                             
             float total = 0;
             
-            for (Operation operation : operations) {
-                total += operation.charge;
+            for (SurgeryType surgeryTypes : surgeryType) {
+                total += surgeryTypes.charges;
             }
             
             return total;

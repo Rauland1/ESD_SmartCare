@@ -417,13 +417,22 @@ public class DBConnection {
     
     public String viewAppointments(int patientId) throws SQLException{
         StringBuilder appointmentTable = new StringBuilder();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime now = LocalDateTime.now();
-        
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM booking_slots WHERE pID=? AND sDate >=? ", PreparedStatement.RETURN_GENERATED_KEYS);
-        
-        preparedStatement.setString(1, String.valueOf(patientId));
-        preparedStatement.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
+        String sql = "";
+        if(patientId == -1 ){
+            sql = "SELECT * FROM booking_slots WHERE sDate >=? ";
+        }
+        else {
+            sql = "SELECT * FROM booking_slots WHERE pID=? AND sDate >=? ";
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        if(patientId == -1){
+            preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+        }
+        else{
+            preparedStatement.setString(1, String.valueOf(patientId));
+            preparedStatement.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
+        }
+       
 
         ResultSet rs = preparedStatement.executeQuery();
         

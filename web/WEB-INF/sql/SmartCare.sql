@@ -13,7 +13,8 @@ create table patients(
 	pLast_name varchar(50),
 	pAddress varchar(100),
 	pType varchar(10),
-        pDOB date,
+    pDOB date,
+    pReferred varchar(10),
 	uName varchar(20) references users(uname)
 );
 
@@ -27,7 +28,7 @@ create table employee(
 	eDays varchar(30),
 	eSHift_start time,
 	eShift_end time,
-        eDOB date,
+    eDOB date,
 	uName varchar(20) references users(uname)
 );
 create table booking_slots(
@@ -96,16 +97,16 @@ INSERT INTO USERS (UNAME, PASSWD, REGISTRATION_TYPE, UROLE) VALUES ('angela', 'a
 INSERT INTO USERS (UNAME, PASSWD, REGISTRATION_TYPE, UROLE) VALUES ('angela11', 'angelawhite123','comfirmed', 'patient');
 
 
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Mr.','Charly', 'Aidan', '14 King Street, Aberdeen, AB24 1BR', 'NHS', '1971-06-14','caidan');
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Mr.','Prince', 'Hassan', 'Non-UK street, Non-UK Town, Non_UK', 'private', '1987-03-05', 'princehassan');
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Mr.','Chris', 'Hobday', 'Bristol, BS16 5AC, 3 Hill lane ', 'private', '1974-07-01', 'chris');
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Mr.','Grant', 'Hughes', 'Bristol, BS16 9XP,34 Oxford Street','NHS', '1992-12-12', 'grant');
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Mrs.','Rita' ,'Evans', 'Bristol, BS4 9ST,19 Fishponds Road','NHS', '1991-10-22','rita');
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Ms.','Emma', 'Hill', 'Bristol, BS13 5GT,7 Lawrence Hill','NHS', '1997-09-17', 'emma');
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Mr.','Brian', 'Coverdale', 'Bristol, BS9 8AC, 22 Lacock Drive','private', '1993-11-20','brian');
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Mr.','Jon', 'White', 'Bristol, BS10 1HD, 4A Church Road','private', '1971-08-03','jon');
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Mrs.','Angela', 'White', 'Bristol, BS10 1HD, 4A Church Road','private', '1971-02-27', 'angela');
-INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, UNAME) VALUES ('Ms.','Angela', 'White', 'Bristol, BS3 19TH, 44B Gilbert Road','private', '1986-11-21', 'angela11');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Mr.','Charly', 'Aidan', '14 King Street, Aberdeen, AB24 1BR', 'NHS', '1971-06-14', '','caidan');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Mr.','Prince', 'Hassan', 'Non-UK street, Non-UK Town, Non_UK', 'private', '1987-03-05',  '', 'princehassan');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Mr.','Chris', 'Hobday', 'Bristol, BS16 5AC, 3 Hill lane ', 'private', '1974-07-01',  '', 'chris');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Mr.','Grant', 'Hughes', 'Bristol, BS16 9XP,34 Oxford Street','NHS', '1992-12-12',  '', 'grant');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Mrs.','Rita' ,'Evans', 'Bristol, BS4 9ST,19 Fishponds Road','NHS', '1991-10-22', '', 'rita');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Ms.','Emma', 'Hill', 'Bristol, BS13 5GT,7 Lawrence Hill','NHS', '1997-09-17', '', 'emma');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Mr.','Brian', 'Coverdale', 'Bristol, BS9 8AC, 22 Lacock Drive','private', '1993-11-20','', 'brian');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Mr.','Jon', 'White', 'Bristol, BS10 1HD, 4A Church Road','private', '1971-08-03','', 'jon');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Mrs.','Angela', 'White', 'Bristol, BS10 1HD, 4A Church Road','private', '1971-02-27','', 'angela');
+INSERT INTO PATIENTS (PTITLE, PFIRST_NAME, PLAST_NAME, PADDRESS, PTYPE, PDOB, PREFERRED, UNAME) VALUES ('Ms.','Angela', 'White', 'Bristol, BS3 19TH, 44B Gilbert Road','private', '1986-11-21','', 'angela11');
 
 INSERT INTO EMPLOYEE (ETITLE, EFIRST_NAME, ELAST_NAME, EADDRESS, EDAYS,ESHIFT_START, ESHIFT_END, EDOB, UNAME) VALUES ('Mr.', 'Raul', 'Ginj', 'Bristol BS14 4ST','Mo,Tu,We,Th,Fr','08:00:00','16:00:00','1995-01-20', 'raul');
 INSERT INTO EMPLOYEE (ETITLE, EFIRST_NAME, ELAST_NAME, EADDRESS, EDAYS,ESHIFT_START, ESHIFT_END, EDOB, UNAME) VALUES ('Ms.', 'Alexandra', 'Rotaru', 'Bristol BS7 5TH', 'Mo,Tu,We,Th,Fr','08:00:00','17:00:00','1994-08-11', 'alexandra');

@@ -1,7 +1,7 @@
 <%-- 
     Document   : records.jsp
     Created on : Jan 20, 2021, 2:16:16 AM
-    Author     : Raul-Andrei Ginj-Groszhart
+    Author     : Alexu
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,15 +17,17 @@
 
         <h2>Appointments</h2>
         <form action="AdminServlet.do" method="POST">
-            <td colspan="3"><input type="submit" name="view_bookings" value="View"></td>
             <table>
                 <tr>
                     <th>Doctor</th>
-                    <th>Patient</th>
                     <th>Date</th>
                     <th>Time</th>
+                    <th>Select</th>
                 </tr>
-                ${requestScope.bRow}
+                ${requestScope.bookingRows}
+                <tr>
+                    <td><input type="submit" name="delete_booking" value="Delete"></td>
+                </tr>
             </table>
         </form>
 

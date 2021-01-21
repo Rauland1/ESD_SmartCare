@@ -32,7 +32,7 @@ public class AdminServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
          // Get current session and DON'T create one if it doesn't exist already
@@ -49,9 +49,8 @@ public class AdminServlet extends HttpServlet {
             String surgeryName = request.getParameter("surgery_name");
             
             request.setAttribute("changePriceForm", dbcon.generatePriceForm(surgeryName));
-            
-            
             request.getRequestDispatcher("operations.jsp").forward(request, response);
+ 
         }
         else if(request.getParameter("submit_price") != null ){
             String surgeryName = request.getParameter("surgery_name");
@@ -59,25 +58,28 @@ public class AdminServlet extends HttpServlet {
             dbcon.updateSurgeryPrice(newPrice, surgeryName);
             String msg = "Price has been changed successfully!";
             request.setAttribute("msg", msg);
-            
             request.getRequestDispatcher("operations.jsp").forward(request, response);
            
         }
-        else if(request.getParameter("viewSurgeryPrices").equals("true")){
+        else if(request.getParameter("viewSurgeryPrices") != null){
             String surgeryPrices =  dbcon.viewSurgeryPrices();
             request.setAttribute("surgeryPrices", surgeryPrices);
-
             request.getRequestDispatcher("operations.jsp").forward(request, response);
-                    
-        }        else if(request.getParameter("viewAppointments").equals("true")){
+        }        
+        else if(request.getParameter("viewAppointments") != null){
             
             // Create dropdown list to view employees that have appointments for a given day
-            
-            
+            String booking = dbcon.viewAppointments(-1);
+            request.setAttribute("bookingRows", booking);
+
             request.getRequestDispatcher("records.jsp").forward(request, response);
         }
+        else if(request.getParameter("delete_booking") != null){
+            dbcon.deleteAppointment(Integer.parseInt(request.getParameter("appointmentID")));
+            response.sendRedirect("records.jsp");
+        }
 
-            
+         
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

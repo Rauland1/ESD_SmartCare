@@ -8,6 +8,11 @@ package com;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +37,7 @@ public class CompleteRegistrationServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
          HttpSession session = request.getSession(false);
        
@@ -43,32 +48,65 @@ public class CompleteRegistrationServlet extends HttpServlet {
         // Set a session attribute with the connection
         session.setAttribute("dbcon", dbcon);
         
+        User user = (User) session.getAttribute("user");
+        
         // Create a new connection to the database
         if(session.getAttribute("dbcon")==null)
         {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
         } 
+        else if(request.getParameter("approve_reg") != null) // From admin dashboard
+        {
+            
+            String regUsername = request.getParameter("regUsername");
+            
+            if(regUsername == null)
+            {
+                request.setAttribute("msg", "<span>No account has been selected!</span>");
+            } else {
+                dbcon.confirmReg(regUsername);
+                request.setAttribute("msg", "<span>Account registration has been approved!</span>");
+            }
+            
+            request.getRequestDispatcher("DashboardServlet.do").forward(request, response);
+        }
         
-        
-        
+        if(request.getParameter("completeRegistration") != null && request.getParameter("completeRegistration").equals("true")){
+
+            request.getRequestDispatcher("complete_registration.jsp").forward(request, response);
+            
+        } 
         
         if(request.getParameter("complete_reg") != null) // From complete_registration.jsp
         {
-
+            List<String> detailsList = new ArrayList<>();
+            
+            detailsList.add(0, (String)request.getParameter("title"));
+            detailsList.add(1, (String)request.getParameter("fName"));
+            detailsList.add(2, (String)request.getParameter("lName"));
+            detailsList.add(3, (String)request.getParameter("house_no"));
+            detailsList.add(4, (String)request.getParameter("post_code"));
+            detailsList.add(5, (String)request.getParameter("DOB"));
+            
             // Array to hold requested parameters
-            String[] details = new String[6];
-            // Request username and password 
-            details[0] = (String)request.getParameter("title");
-            details[1] = (String)request.getParameter("fName");
-            details[2] = (String)request.getParameter("lName");
-            details[3] = (String)request.getParameter("house_no");
-            details[4] = (String)request.getParameter("post_code");
-            details[5] = (String)request.getParameter("DOB");
+            if(user.getRole().equals("Patient"))
+            {
+                detailsList.add(6, (String)request.getParameter("patientType"));
+            } else {
+                detailsList.add(6, (String)request.getParameter("shift_start"));
+                detailsList.add(7, (String)request.getParameter("shift_start"));
+            }
+            
+            
+            String[] detailsArray = new String[detailsList.size()];
+            detailsArray = detailsList.toArray(detailsArray);
+            
             
             if(session.getAttribute("user") != null) {
-                User user = (User)session.getAttribute("user");
-            
-                dbcon.completeRegistration(details, user.getUsername(), user.getRole());
+                dbcon.completeRegistration(detailsArray, user.getUsername(), user.getRole());
+                User newUser = dbcon.grabUserByName(user.getUsername());
+                session.removeAttribute("user");
+                session.setAttribute("user", newUser);
                 request.setAttribute("msg", "Registration Complete!");
             } else {
                 response.sendRedirect("conError.jsp");
@@ -77,11 +115,8 @@ public class CompleteRegistrationServlet extends HttpServlet {
             request.getRequestDispatcher("DashboardServlet.do").forward(request, response);
             
         }
-        if(request.getParameter("completeRegistration").equals("true")){
-
-            request.getRequestDispatcher("complete_registration.jsp").forward(request, response);
-            
-        } 
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -96,7 +131,11 @@ public class CompleteRegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(CompleteRegistrationServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -110,7 +149,11 @@ public class CompleteRegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(CompleteRegistrationServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

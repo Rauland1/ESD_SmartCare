@@ -31,7 +31,7 @@
                     ${requestScope.details}
                     ${requestScope.msg}
                     <h2>Approve registrations</h2>
-                    <form action='RegisterServlet.do' method='POST'>
+                    <form action='CompleteRegistrationServlet.do' method='POST'>
                         <table>
                             <tr>
                                 <th>Username</th>

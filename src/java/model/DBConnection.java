@@ -637,33 +637,45 @@ public class DBConnection {
             String sql = null;
             
             if(urole.equals("Admin") || urole.equals("Doctor") || urole.equals("Nurse")) {
-                sql = "UPDATE employee SET eTitle=?, eFirst_Name=?, eLast_Name=?, eAddress=? , eDOB=? WHERE uname=?";
+                sql = "UPDATE employee SET eTitle=?, eFirst_Name=?, eLast_Name=?, eAddress=?, eDOB=?, eShift_Start=?, eShift_End=?, eDays=? WHERE uname=?";
             }
             else {
-                sql = "UPDATE patients SET pTitle=?, pFirst_Name=?,pLast_Name=?, pAddress=?, pDOB=? WHERE uname=?";
+                sql = "UPDATE patients SET pTitle=?, pFirst_Name=?, pLast_Name=?, pAddress=?, pDOB=?, pType=? WHERE uname=?";
             }
             
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             
+            // Title
             preparedStatement.setString(1, details[0]);
+            // First Name
             preparedStatement.setString(2, details[1]);
+            // Last Name
             preparedStatement.setString(3, details[2]);
-            
-            
-            
+            // Post Code
             PlaceAPI placeapi = new PlaceAPI(details[4]);
-            
+            // House Number
             String full_address = details[3] + " " + placeapi.getAddressXML();
-            
+            // Address
             preparedStatement.setString(4, full_address);
-            
+            // Date of Birth
             preparedStatement.setString(5, details[5]);
             
-            preparedStatement.setString(6, username);
+            if(urole.equals("Patient")){
+                preparedStatement.setString(6, details[6]);
+                // Last one
+                preparedStatement.setString(7, username);
+            } else {
+                preparedStatement.setString(6, details[6]);
+                preparedStatement.setString(7, details[7]);
+                preparedStatement.setString(8, "Mo,Tu,We,Th,Fr");
+                // Last one
+                preparedStatement.setString(9, username);
+            }
             
             preparedStatement.executeUpdate();
  
             preparedStatement.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }

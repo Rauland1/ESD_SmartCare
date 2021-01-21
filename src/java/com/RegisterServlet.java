@@ -54,21 +54,21 @@ public class RegisterServlet extends HttpServlet {
         {
             request.getRequestDispatcher("conError.jsp").forward(request, response);
         } 
-        else if(request.getParameter("approve_reg") != null) // From admin dashboard
-        {
-            
-            String regUsername = request.getParameter("regUsername");
-            
-            if(regUsername == null)
-            {
-                request.setAttribute("msg", "<span>No account has been selected!</span>");
-            } else {
-                dbcon.confirmReg(regUsername);
-                request.setAttribute("msg", "<span>Account registration has been approved!</span>");
-            }
-            
-            request.getRequestDispatcher("DashboardServlet.do").forward(request, response);
-        }
+//        else if(request.getParameter("approve_reg") != null) // From admin dashboard
+//        {
+//            
+//            String regUsername = request.getParameter("regUsername");
+//            
+//            if(regUsername == null)
+//            {
+//                request.setAttribute("msg", "<span>No account has been selected!</span>");
+//            } else {
+//                dbcon.confirmReg(regUsername);
+//                request.setAttribute("msg", "<span>Account registration has been approved!</span>");
+//            }
+//            
+//            request.getRequestDispatcher("DashboardServlet.do").forward(request, response);
+//        }
        
         else if(request.getParameter("registration_form") != null) // From register.jsp
         {

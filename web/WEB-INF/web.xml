@@ -52,10 +52,14 @@
     <servlet>
         <servlet-name>CompleteRegistrationServlet</servlet-name>
         <servlet-class>com.CompleteRegistrationServlet</servlet-class>
-   </servlet>
+    </servlet>
     <servlet>
         <servlet-name>ViewAppointmentServlet</servlet-name>
         <servlet-class>com.ViewAppointmentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddPatientServlet</servlet-name>
+        <servlet-class>com.AddPatientServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
@@ -100,6 +104,10 @@
     <servlet-mapping>
         <servlet-name>ViewAppointmentServlet</servlet-name>
         <url-pattern>/ViewAppointmentServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPatientServlet</servlet-name>
+        <url-pattern>/AddPatientServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

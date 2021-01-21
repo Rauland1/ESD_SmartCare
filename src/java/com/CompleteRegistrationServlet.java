@@ -94,7 +94,7 @@ public class CompleteRegistrationServlet extends HttpServlet {
                 detailsList.add(6, (String)request.getParameter("patientType"));
             } else {
                 detailsList.add(6, (String)request.getParameter("shift_start"));
-                detailsList.add(7, (String)request.getParameter("shift_start"));
+                detailsList.add(7, (String)request.getParameter("shift_end"));
             }
             
             

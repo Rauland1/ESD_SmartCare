@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -32,13 +32,15 @@ public class TurnoverServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         
         DBConnection dbcon = new DBConnection((Connection)request.getServletContext().getAttribute("connection"));
-
+        
         // Get the username from the session
         String username = (String) session.getAttribute("username");
         
